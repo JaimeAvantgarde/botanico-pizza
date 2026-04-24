@@ -1062,16 +1062,16 @@
       .nav-links {
         position: fixed;
         top: 0;
-        right: -100vw;
-        width: 100vw;
+        right: -100%;
+        width: 280px;
         height: 100vh;
         background: var(--navy-deep);
         flex-direction: column;
         justify-content: center;
-        align-items: center;
         gap: 28px;
         padding: 40px;
         transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border-left: 3px solid var(--teal);
       }
       .nav-links.open { right: 0; }
       .nav-links a { font-size: 1rem; color: var(--cream); }
