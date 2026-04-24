@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración | Botánico Pizza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0f3642;
+      --navy-deep: #082028;
+      --teal: #8dd5c8;
+      --teal-soft: #c5e6dd;
+      --mustard: #f5d36e;
+      --orange: #e97c3d;
+      --cream: #fffaea;
+      --cream-bg: #fffcef;
+      --white: #ffffff;
+      --red: #c0392b;
+      --green: #27ae60;
+      --border: rgba(15, 54, 66, 0.12);
+      --border-strong: rgba(15, 54, 66, 0.25);
+      --text: #0f3642;
+      --text-muted: #5a7077;
+
+      --font-display: 'Archivo Black', Impact, sans-serif;
+      --font-body: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background: var(--cream-bg); color: var(--text); min-height: 100vh; font-weight: 500; -webkit-font-smoothing: antialiased; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+    input, textarea, select { font-family: inherit; font-size: 0.9rem; }
+
+    /* ===== LOGIN ===== */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--teal-soft);
+      position: relative;
+      overflow: hidden;
+    }
+    .login-box {
+      background: var(--cream);
+      border-radius: 24px;
+      padding: 44px 40px 40px;
+      width: 400px;
+      max-width: 90vw;
+      box-shadow: 0 20px 50px rgba(8, 32, 40, 0.18);
+      text-align: center;
+      border: 3px solid var(--navy);
+      position: relative;
+      z-index: 2;
+    }
+    .login-brand-circle {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cream);
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      line-height: 1;
+      margin: 0 auto 20px;
+      border: 2px solid var(--navy);
+    }
+    .login-box h1 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .login-box p {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid var(--border-strong);
+      border-radius: 50px;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 0.3s;
+      font-weight: 600;
+      text-align: center;
+      color: var(--navy);
+    }
+    .login-box input:focus { border-color: var(--navy); }
+    .login-box .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--navy);
+      color: var(--cream);
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-top: 8px;
+      transition: all 0.3s;
+      font-family: var(--font-body);
+      border: 2px solid var(--navy);
+    }
+    .login-box .btn-login:hover { background: var(--orange); border-color: var(--orange); transform: translateY(-1px); }
+    .login-error {
+      color: var(--red);
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-top: 10px;
+      display: none;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ===== LAYOUT ===== */
+    .app { display: none; min-height: 100vh; }
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 240px;
+      height: 100vh;
+      background: var(--navy);
+      color: var(--cream);
+      padding: 28px 0;
+      z-index: 100;
+      overflow-y: auto;
+      border-right: 3px solid var(--teal);
+    }
+    .sidebar-brand {
+      padding: 0 20px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sidebar-brand-circle {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--cream);
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .sidebar-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .sidebar-brand h2 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    .sidebar-brand span {
+      font-size: 0.55rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255, 250, 234, 0.55);
+      font-weight: 700;
+      margin-top: 3px;
+    }
+    .sidebar-nav {
+      list-style: none;
+    }
+    .sidebar-nav li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: rgba(255, 250, 234, 0.6);
+      text-decoration: none;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .sidebar-nav li a:hover { color: var(--cream); background: rgba(141, 213, 200, 0.08); }
+    .sidebar-nav li a.active {
+      color: var(--cream);
+      background: rgba(141, 213, 200, 0.14);
+      border-left-color: var(--teal);
+    }
+    .sidebar-nav li a svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+    .sidebar-logout {
+      position: absolute;
+      bottom: 20px;
+      left: 0; right: 0;
+      padding: 0 20px;
+    }
+    .sidebar-logout button {
+      width: 100%;
+      padding: 11px;
+      background: rgba(255, 250, 234, 0.06);
+      color: rgba(255, 250, 234, 0.6);
+      border-radius: 50px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .sidebar-logout button:hover { background: var(--orange); color: var(--cream); }
+
+    .main {
+      margin-left: 240px;
+      padding: 36px 40px;
+      min-height: 100vh;
+    }
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .main-header h1 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    /* ===== SECTION PANELS ===== */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* ===== CARDS ===== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 24px;
+      border: 2px solid var(--navy);
+    }
+    .stat-card:nth-child(2) { background: var(--teal-soft); }
+    .stat-card:nth-child(3) { background: var(--mustard); }
+    .stat-card .label {
+      font-size: 0.6rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0.7;
+      margin-bottom: 10px;
+    }
+    .stat-card .value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--navy);
+      line-height: 1;
+    }
+
+    /* ===== TABLE ===== */
+    .panel {
+      background: var(--cream);
+      border-radius: 20px;
+      border: 2px solid var(--navy);
+      overflow: hidden;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 2px solid var(--border);
+    }
+    .panel-header h3 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+    .btn-primary { background: var(--navy); color: var(--cream); border: 2px solid var(--navy); }
+    .btn-primary:hover { background: var(--orange); border-color: var(--orange); transform: translateY(-1px); }
+    .btn-secondary { background: var(--cream-bg); color: var(--navy); border: 2px solid var(--navy); }
+    .btn-secondary:hover { background: var(--teal); }
+    .btn-danger { background: var(--red); color: var(--white); border: 2px solid var(--red); }
+    .btn-danger:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-sm { padding: 7px 14px; font-size: 0.58rem; letter-spacing: 1.5px; }
+
+    /* ===== ITEM LIST ===== */
+    .item-list { list-style: none; }
+    .item-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .item-row:last-child { border-bottom: none; }
+    .item-row:hover { background: var(--cream-bg); }
+    .item-row .item-info { flex: 1; min-width: 0; }
+    .item-row .item-name {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .item-row .item-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 420px;
+      font-weight: 500;
+    }
+    .item-row .item-price {
+      font-family: var(--font-display);
+      color: var(--navy);
+      font-size: 1.05rem;
+      min-width: 70px;
+      text-align: right;
+    }
+    .item-row .item-tag {
+      font-size: 0.55rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: var(--orange);
+      color: var(--cream);
+      padding: 4px 10px;
+      border-radius: 50px;
+    }
+    .item-row .item-actions { display: flex; gap: 6px; }
+
+    /* ===== CARTA LAYOUT ===== */
+    .carta-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0;
+    }
+    .category-filter {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 16px 12px;
+      border-right: 2px solid var(--border);
+      background: var(--cream-bg);
+      border-radius: 20px 0 0 20px;
+    }
+    .category-filter button {
+      padding: 10px 14px;
+      border-radius: 50px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0.7;
+      background: transparent;
+      transition: all 0.2s;
+      text-align: left;
+      font-family: var(--font-body);
+    }
+    .category-filter button.active {
+      background: var(--navy);
+      color: var(--cream);
+      opacity: 1;
+    }
+    .category-filter button:hover:not(.active) {
+      background: var(--teal);
+      opacity: 1;
+    }
+
+    /* ===== FORM ===== */
+    .form-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 32, 40, 0.5);
+      z-index: 200;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+      overflow-y: auto;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .form-overlay.open { display: flex; }
+    .form-card {
+      background: var(--cream);
+      border-radius: 24px;
+      width: 540px;
+      max-width: 100%;
+      box-shadow: 0 20px 60px rgba(8, 32, 40, 0.3);
+      border: 3px solid var(--navy);
+    }
+    .form-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 26px;
+      border-bottom: 2px solid var(--border);
+    }
+    .form-card-header h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .form-card-close {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--cream-bg);
+      border: 2px solid var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: var(--navy);
+      transition: all 0.2s;
+    }
+    .form-card-close:hover { background: var(--orange); color: var(--cream); border-color: var(--orange); }
+    .form-card-body { padding: 26px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0.75;
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 11px 16px;
+      border: 2px solid var(--border-strong);
+      border-radius: 12px;
+      outline: none;
+      color: var(--navy);
+      font-weight: 500;
+      transition: border-color 0.2s;
+      background: var(--white);
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--navy); }
+    .form-group textarea { resize: vertical; min-height: 80px; font-family: var(--font-body); line-height: 1.5; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-card-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 18px 26px;
+      border-top: 2px solid var(--border);
+      background: var(--cream-bg);
+      border-radius: 0 0 21px 21px;
+    }
+
+    /* ===== HORARIO ===== */
+    .horario-form .horario-row {
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 2px dotted var(--border);
+    }
+    .horario-form .horario-row:last-child { border-bottom: none; }
+    .horario-form .day-name {
+      font-family: var(--font-display);
+      color: var(--navy);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .horario-form input {
+      padding: 10px 16px;
+      border: 2px solid var(--border-strong);
+      border-radius: 50px;
+      outline: none;
+      font-size: 0.85rem;
+      color: var(--navy);
+      font-weight: 500;
+    }
+    .horario-form input:focus { border-color: var(--navy); }
+    .horario-form .toggle {
+      width: 50px; height: 26px;
+      border-radius: 50px;
+      background: var(--green);
+      position: relative;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .horario-form .toggle.closed { background: var(--text-muted); }
+    .horario-form .toggle::after {
+      content: '';
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--white);
+      position: absolute;
+      top: 3px; left: 3px;
+      transition: left 0.3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .horario-form .toggle.closed::after { left: 27px; }
+
+    /* ===== CONFIG ===== */
+    .config-section { margin-bottom: 32px; }
+    .config-section h3 {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--navy);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px dotted var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 14px 26px;
+      background: var(--navy);
+      color: var(--cream);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 10px 30px rgba(8, 32, 40, 0.25);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 999;
+      border: 2px solid var(--teal);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+    .empty-state p {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 18px 0;
+        border-right: none;
+        border-bottom: 3px solid var(--teal);
+      }
+      .sidebar-nav {
+        display: flex;
+        overflow-x: auto;
+        padding: 0 12px;
+      }
+      .sidebar-nav li a {
+        padding: 10px 14px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        white-space: nowrap;
+        font-size: 0.62rem;
+      }
+      .sidebar-nav li a.active {
+        border-left-color: transparent;
+        border-bottom-color: var(--teal);
+      }
+      .sidebar-brand { display: none; }
+      .sidebar-logout { display: none; }
+      .main { margin-left: 0; padding: 24px 16px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .carta-layout { grid-template-columns: 1fr; }
+      .category-filter {
+        flex-direction: row;
+        overflow-x: auto;
+        border-right: none;
+        border-bottom: 2px solid var(--border);
+        border-radius: 20px 20px 0 0;
+        padding: 12px;
+      }
+      .category-filter button {
+        white-space: nowrap;
+        text-align: center;
+        padding: 8px 14px;
+      }
+      .item-row { flex-wrap: wrap; padding: 14px 18px; }
+      .item-row .item-desc { max-width: none; white-space: normal; }
+      .form-row { grid-template-columns: 1fr; }
+      .horario-form .horario-row { grid-template-columns: 90px 1fr auto; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <div class="login-brand-circle"><span>B</span></div>
+      <h1>BotániCo</h1>
+      <p>Panel de administración</p>
+      <input type="password" id="loginPassword" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="btn-login" onclick="doLogin()">Entrar</button>
+      <div class="login-error" id="loginError">Contraseña incorrecta</div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="app" id="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-circle">B</div>
+        <div class="sidebar-brand-text">
+          <h2>BotániCo</h2>
+          <span>Panel Admin</span>
+        </div>
+      </div>
+      <ul class="sidebar-nav" id="sidebarNav">
+        <li><a href="#" data-section="dashboard" class="active">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Inicio
+        </a></li>
+        <li><a href="#" data-section="carta">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Carta
+        </a></li>
+        <li><a href="#" data-section="horario">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Horario
+        </a></li>
+        <li><a href="#" data-section="config">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          Configuración
+        </a></li>
+      </ul>
+      <div class="sidebar-logout">
+        <button onclick="doLogout()">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="section active" id="sec-dashboard">
+        <div class="main-header"><h1>Panel de control</h1></div>
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="panel">
+          <div class="panel-header"><h3>Últimos platos añadidos</h3></div>
+          <ul class="item-list" id="recentItems"></ul>
+        </div>
+      </div>
+
+      <!-- CARTA -->
+      <div class="section" id="sec-carta">
+        <div class="main-header">
+          <h1>Carta</h1>
+          <button class="btn btn-primary" onclick="openItemForm()">+ Añadir plato</button>
+        </div>
+        <div class="panel carta-layout">
+          <div class="category-filter" id="categoryFilter"></div>
+          <ul class="item-list" id="itemList"></ul>
+        </div>
+      </div>
+
+      <!-- HORARIO -->
+      <div class="section" id="sec-horario">
+        <div class="main-header">
+          <h1>Horario</h1>
+          <button class="btn btn-primary" onclick="saveHorario()">Guardar cambios</button>
+        </div>
+        <div class="panel">
+          <div class="horario-form" id="horarioForm" style="padding:24px;"></div>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div class="section" id="sec-config">
+        <div class="main-header">
+          <h1>Configuración</h1>
+          <button class="btn btn-primary" onclick="saveConfig()">Guardar cambios</button>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;">
+          <div class="panel" style="padding:24px;">
+            <div class="config-section" style="margin-bottom:0;">
+              <h3>Información del restaurante</h3>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="text" id="cfgPhone">
+              </div>
+              <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="cfgAddress">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Ciudad</label>
+                <input type="text" id="cfgCity">
+              </div>
+            </div>
+          </div>
+          <div class="panel" style="padding:24px;">
+            <div class="config-section" style="margin-bottom:0;">
+              <h3>Redes sociales</h3>
+              <div class="form-group">
+                <label>Instagram (usuario sin @)</label>
+                <input type="text" id="cfgInstagram">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Facebook (URL)</label>
+                <input type="text" id="cfgFacebook">
+              </div>
+            </div>
+          </div>
+          <div class="panel" style="padding:24px;">
+            <div class="config-section" style="margin-bottom:0;">
+              <h3>Seguridad</h3>
+              <div class="form-group" style="margin-bottom:0;">
+                <label>Nueva contraseña del panel</label>
+                <input type="password" id="cfgPassword" placeholder="Dejar vacío para no cambiar">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FORM OVERLAY -->
+  <div class="form-overlay" id="formOverlay">
+    <div class="form-card">
+      <div class="form-card-header">
+        <h3 id="formTitle">Añadir plato</h3>
+        <button class="form-card-close" onclick="closeItemForm()">&times;</button>
+      </div>
+      <div class="form-card-body">
+        <input type="hidden" id="formId">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="formName" placeholder="Ej: Margarita">
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="formDesc" placeholder="Ingredientes o descripción del plato"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Precio (€)</label>
+            <input type="text" id="formPrice" placeholder="Ej: 8,50">
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="formCategory"></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Etiqueta (opcional)</label>
+            <input type="text" id="formTag" placeholder="Ej: Favorita, Premium">
+          </div>
+          <div class="form-group">
+            <label>Tipo de etiqueta</label>
+            <select id="formTagType">
+              <option value="">Sin etiqueta</option>
+              <option value="popular">Destacada (naranja)</option>
+              <option value="normal">Normal</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-card-footer">
+        <button class="btn btn-secondary" onclick="closeItemForm()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveItem()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELETE CONFIRM -->
+  <div class="form-overlay" id="deleteOverlay">
+    <div class="form-card" style="width:420px;">
+      <div class="form-card-header">
+        <h3>Eliminar plato</h3>
+        <button class="form-card-close" onclick="closeDelete()">&times;</button>
+      </div>
+      <div class="form-card-body">
+        <p style="font-size:0.9rem; line-height:1.6;">¿Seguro que quieres eliminar <strong id="deleteName"></strong>? Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="form-card-footer">
+        <button class="btn btn-secondary" onclick="closeDelete()">Cancelar</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== DEFAULT DATA =====
+    const DEFAULT_CATEGORIES = [
+      { id: 'pizzas-novedades', name: 'Novedades', order: 1 },
+      { id: 'pizzas-clasicas', name: 'Pizzas Clásicas', order: 2 },
+      { id: 'pizzas-especiales', name: 'Pizzas Especiales', order: 3 },
+      { id: 'pasta', name: 'Pastas al Horno', order: 4 },
+      { id: 'entrantes', name: 'Entrantes', order: 5 },
+      { id: 'ensaladas', name: 'Ensaladas', order: 6 },
+      { id: 'postres', name: 'Postres', order: 7 },
+      { id: 'bebidas', name: 'Bebidas', order: 8 },
+      { id: 'vinos', name: 'Vinos', order: 9 }
+    ];
+
+    const DEFAULT_ITEMS = [
+      // Novedades de la Casa
+      { id: 1, cat: 'pizzas-novedades', name: 'Watami', desc: 'Tomate, mozzarella 100%, viruta de bonito, alga wakame, aguacate, atún fresco macerado con soja y salsa de mango, cebollino, stracciatella, mayonesa de kimchi y sésamo negro', price: '16,80', tag: 'Última incorporación', tagType: 'popular' },
+      { id: 2, cat: 'pizzas-novedades', name: 'Zucca', desc: 'Calabaza, mozzarella 100%, setas, ricotta, guanciale y scamorza', price: '14,20', tag: '', tagType: '' },
+      { id: 3, cat: 'pizzas-novedades', name: 'Botánico', desc: 'Base de ricotta, mozzarella 100%, yema, setas, jamón serrano ibérico y queso de cabra curado de la zona', price: '15,80', tag: 'De la casa', tagType: 'normal' },
+      { id: 4, cat: 'pizzas-novedades', name: 'Ventresca', desc: 'Base de tomate, mozzarella 100%, ventresca de atún, pimiento rojo, cebolla y queso de cabra madurado', price: '13,20', tag: '', tagType: '' },
+
+      // Pizzas Clásicas
+      { id: 5, cat: 'pizzas-clasicas', name: 'Margarita', desc: 'Base de tomate, mozzarella 100% y albahaca', price: '9,50', tag: '', tagType: '' },
+      { id: 6, cat: 'pizzas-clasicas', name: 'Margarita Original', desc: 'Base de tomate, mozzarella 100% de búffala, albahaca y aceite de oliva', price: '10,50', tag: '', tagType: '' },
+      { id: 7, cat: 'pizzas-clasicas', name: 'Prosciutto', desc: 'Base de tomate, mozzarella 100% y jamón york', price: '10,80', tag: '', tagType: '' },
+      { id: 8, cat: 'pizzas-clasicas', name: 'Romana', desc: 'Base de tomate, mozzarella 100%, champiñones y jamón york', price: '11,00', tag: '', tagType: '' },
+      { id: 9, cat: 'pizzas-clasicas', name: 'Pepparoni', desc: 'Base de tomate, mozzarella 100% y pepperoni', price: '10,80', tag: 'Novedad', tagType: 'popular' },
+      { id: 10, cat: 'pizzas-clasicas', name: 'Carbonara', desc: 'Base de nata, mozzarella 100%, bacon, champiñones y cebolla', price: '12,20', tag: '', tagType: '' },
+      { id: 11, cat: 'pizzas-clasicas', name: '4 Estaciones', desc: 'Base de tomate, mozzarella 100%, jamón york, bacon, ventresca de atún y champiñones', price: '12,20', tag: '', tagType: '' },
+      { id: 12, cat: 'pizzas-clasicas', name: '4 Quesos', desc: 'Base de tomate, mozzarella 100%, gorgonzola, gouda y parmesano', price: '12,20', tag: '', tagType: '' },
+      { id: 13, cat: 'pizzas-clasicas', name: 'Barbacoa', desc: 'Base de salsa barbacoa, mozzarella 100%, carne de ternera picada, cebolla y bacon', price: '12,20', tag: '', tagType: '' },
+      { id: 14, cat: 'pizzas-clasicas', name: 'Suiza', desc: 'Base de tomate, mozzarella 100%, bacon, cebolla y gorgonzola', price: '12,20', tag: '', tagType: '' },
+      { id: 15, cat: 'pizzas-clasicas', name: 'Hawaiana', desc: 'Base de tomate, mozzarella 100%, jamón york, piña y doble de queso', price: '12,20', tag: '', tagType: '' },
+      { id: 16, cat: 'pizzas-clasicas', name: 'Marinera', desc: 'Base de tomate, mozzarella 100%, ventresca de atún, anchoas y aceitunas negras', price: '12,20', tag: '', tagType: '' },
+
+      // Pizzas Especiales
+      { id: 17, cat: 'pizzas-especiales', name: 'Barbacoa Cream', desc: 'Base de salsa barbacoa cremosa, mozzarella 100%, cebolla, carne de ternera picada y bacon', price: '13,20', tag: '', tagType: '' },
+      { id: 18, cat: 'pizzas-especiales', name: 'Carbonara Sweet', desc: 'Base de nata, mozzarella 100%, bacon, champiñones y cebolla caramelizada', price: '13,20', tag: '', tagType: '' },
+      { id: 19, cat: 'pizzas-especiales', name: 'Barbacoa Hot', desc: 'Base de salsa barbacoa picante, mozzarella 100%, cebolla, carne de ternera picada, pepperoni y bacon', price: '13,20', tag: '', tagType: '' },
+      { id: 20, cat: 'pizzas-especiales', name: '5 Quesos', desc: 'Base de nata, mozzarella 100%, gouda, chédar, cabra y parmesano', price: '13,20', tag: '', tagType: '' },
+      { id: 21, cat: 'pizzas-especiales', name: 'Vegetariana', desc: 'Base de tomate, mozzarella 100%, espárragos, cebolla, champiñones, tomate natural en rodajas y berenjena', price: '12,80', tag: '', tagType: '' },
+      { id: 22, cat: 'pizzas-especiales', name: 'Montesa', desc: 'Base de tomate, mozzarella 100%, bacon, champiñones y queso de cabra', price: '12,80', tag: '', tagType: '' },
+      { id: 23, cat: 'pizzas-especiales', name: 'César', desc: 'Mozzarella 100%, rúcula, bacon, pollo crujiente y salsa césar', price: '13,20', tag: '', tagType: '' },
+      { id: 24, cat: 'pizzas-especiales', name: 'Summer', desc: 'Base de crema de queso, mozzarella 100%, aguacate, salmón ahumado, cebolla roja, sésamo, mostaza y miel', price: '14,50', tag: '', tagType: '' },
+      { id: 25, cat: 'pizzas-especiales', name: 'María', desc: 'Base de tomate, mozzarella 100%, ajo, rúcula, jamón serrano, parmesano DOP y aceite de oliva', price: '14,50', tag: '', tagType: '' },
+      { id: 26, cat: 'pizzas-especiales', name: 'Panda Thai', desc: 'Crema de queso, mozzarella 100%, pollo al curry, queso gouda, pimiento rojo y salsa thai agridulce', price: '13,20', tag: '', tagType: '' },
+      { id: 27, cat: 'pizzas-especiales', name: '4 Quesos con Ajo Negro', desc: 'Base de nata, mozzarella 100%, gorgonzola, queso manchego DOP, parmesano DOP y ajo negro', price: '14,50', tag: '', tagType: '' },
+      { id: 28, cat: 'pizzas-especiales', name: 'Rústica', desc: 'Crema de queso, mozzarella, queso de cabra, láminas de pera, cebolla caramelizada y albahaca', price: '14,50', tag: '', tagType: '' },
+      { id: 29, cat: 'pizzas-especiales', name: 'Pastoral', desc: 'Salsa de tomate, mozzarella 100%, espinacas frescas, láminas de manzana, queso de cabra y nueces', price: '14,20', tag: '', tagType: '' },
+      { id: 30, cat: 'pizzas-especiales', name: 'Siciliana', desc: 'Salsa de tomate, mortadela, mozzarella de búfala, rúcula, pesto de pistacho, lascas de parmesano DOP y burrata', price: '15,20', tag: '', tagType: '' },
+      { id: 31, cat: 'pizzas-especiales', name: 'Burrata', desc: 'Salsa de tomate, jamón serrano, rúcula, cherry deshidratado, lascas de parmesano DOP y burrata', price: '15,20', tag: '', tagType: '' },
+
+      // Pastas al Horno (todas 11,80€, salsa a elegir)
+      { id: 32, cat: 'pasta', name: 'Pasta Rellena de Carne', desc: 'Salsa a elegir: boloñesa, carbonara, gorgonzola, setas o pesto', price: '11,80', tag: '', tagType: '' },
+      { id: 33, cat: 'pasta', name: 'Pasta Verde Rellena de Espinacas y Requesón', desc: 'Salsa a elegir: boloñesa, carbonara, gorgonzola, setas o pesto', price: '11,80', tag: '', tagType: '' },
+      { id: 34, cat: 'pasta', name: 'Pasta Rellena de Gorgonzola', desc: 'Salsa a elegir: boloñesa, carbonara, gorgonzola, setas o pesto', price: '11,80', tag: '', tagType: '' },
+      { id: 35, cat: 'pasta', name: 'Pasta Rellena de Pera', desc: 'Salsa a elegir: boloñesa, carbonara, gorgonzola, setas o pesto', price: '11,80', tag: '', tagType: '' },
+      { id: 36, cat: 'pasta', name: 'Lasaña Boloñesa', desc: 'Al horno', price: '11,80', tag: '', tagType: '' },
+      { id: 37, cat: 'pasta', name: 'Lasaña Vegetal', desc: 'Al horno', price: '11,80', tag: '', tagType: '' },
+
+      // Entrantes
+      { id: 38, cat: 'entrantes', name: 'Provolone', desc: 'Provolone con tomate especiado al horno', price: '10,20', tag: '', tagType: '' },
+      { id: 39, cat: 'entrantes', name: 'Pan de Pizza con Mantequilla', desc: 'Pan de pizza con mantequilla de la casa', price: '7,50', tag: '', tagType: '' },
+      { id: 40, cat: 'entrantes', name: 'Pan de Pizza con Paté', desc: 'Pan de pizza con paté', price: '9,80', tag: '', tagType: '' },
+
+      // Ensaladas
+      { id: 41, cat: 'ensaladas', name: 'Caprese', desc: 'Tomate, mozzarella fresca de búffala, aceitunas negras, albahaca, sal y pimienta negra', price: '9,80', tag: '', tagType: '' },
+      { id: 42, cat: 'ensaladas', name: 'De la Casa', desc: 'Rúcula, canónigos, pollo crujiente, salsa de yogur, pasas, nueces, parmesano DOP y picatostes', price: '10,80', tag: '', tagType: '' },
+      { id: 43, cat: 'ensaladas', name: 'César', desc: 'Pollo crujiente, lechuga, tomate cherry, picatostes, bacon, parmesano DOP y salsa césar', price: '10,20', tag: '', tagType: '' },
+      { id: 44, cat: 'ensaladas', name: 'Cabra', desc: 'Brotes tiernos, bacon, tomate cherry, queso de cabra, salsa miel y mostaza, nueces, pasas y picatostes', price: '13,50', tag: '', tagType: '' },
+      { id: 45, cat: 'ensaladas', name: 'Burrata', desc: 'Espinacas baby, burrata, tomate seco en aceite, piñones, pesto de pistacho, picatostes, bacon y parmesano DOP', price: '13,80', tag: '', tagType: '' },
+
+      // Postres
+      { id: 46, cat: 'postres', name: 'Tiramisú', desc: 'Tiramisú casero', price: '5,50', tag: '', tagType: '' },
+      { id: 47, cat: 'postres', name: 'Tarta de Queso', desc: 'Tarta de queso casera', price: '5,00', tag: '', tagType: '' },
+      { id: 48, cat: 'postres', name: 'Pizza Dulce de Nutella y Lacasitos', desc: 'Pizza dulce con Nutella y Lacasitos', price: '9,20', tag: '', tagType: '' },
+      { id: 49, cat: 'postres', name: 'Pizza Dulce de Chocolate Blanco y Oreo', desc: 'Pizza dulce de chocolate blanco y galletas Oreo', price: '9,20', tag: '', tagType: '' },
+
+      // Bebidas
+      { id: 50, cat: 'bebidas', name: 'Refrescos', desc: 'Cola, Cola Zero, Cola Zero Zero, Fanta Naranja, Fanta Limón y Seven-Up', price: '2,50', tag: '', tagType: '' },
+      { id: 51, cat: 'bebidas', name: 'Nestea', desc: '', price: '2,80', tag: '', tagType: '' },
+      { id: 52, cat: 'bebidas', name: 'Acuarius', desc: 'Normal o Naranja', price: '2,80', tag: '', tagType: '' },
+      { id: 53, cat: 'bebidas', name: 'Zumo', desc: 'Piña o melocotón', price: '2,20', tag: '', tagType: '' },
+      { id: 54, cat: 'bebidas', name: 'Agua 1/2 L', desc: '', price: '1,60', tag: '', tagType: '' },
+      { id: 55, cat: 'bebidas', name: 'Agua 1 L', desc: '', price: '3,00', tag: '', tagType: '' },
+      { id: 56, cat: 'bebidas', name: 'Agua con Gas', desc: '', price: '2,30', tag: '', tagType: '' },
+      { id: 57, cat: 'bebidas', name: 'Mosto', desc: '', price: '2,30', tag: '', tagType: '' },
+      { id: 58, cat: 'bebidas', name: 'Limonada', desc: '', price: '3,00', tag: '', tagType: '' },
+      { id: 59, cat: 'bebidas', name: 'Bitter Kas', desc: '', price: '2,30', tag: '', tagType: '' },
+      { id: 60, cat: 'bebidas', name: 'Tónica', desc: '', price: '2,30', tag: '', tagType: '' },
+      { id: 61, cat: 'bebidas', name: 'Tercio Estrella Galicia', desc: '', price: '3,00', tag: '', tagType: '' },
+      { id: 62, cat: 'bebidas', name: 'Estrella Galicia Sin Alcohol', desc: '', price: '3,00', tag: '', tagType: '' },
+      { id: 63, cat: 'bebidas', name: 'Radler', desc: '', price: '3,00', tag: '', tagType: '' },
+      { id: 64, cat: 'bebidas', name: 'Tinto de Verano', desc: '', price: '2,50', tag: '', tagType: '' },
+      { id: 65, cat: 'bebidas', name: 'Tercio 1925', desc: '', price: '3,50', tag: '', tagType: '' },
+      { id: 66, cat: 'bebidas', name: 'Tercio Red Vintage', desc: '', price: '3,50', tag: '', tagType: '' },
+      { id: 67, cat: 'bebidas', name: 'Tercio 1906', desc: '', price: '3,50', tag: '', tagType: '' },
+      { id: 68, cat: 'bebidas', name: 'Sidra Maeloc', desc: 'Sabor pera, fresa o mora', price: '3,50', tag: '', tagType: '' },
+
+      // Vinos
+      { id: 69, cat: 'vinos', name: 'Ribera del Duero — Protos', desc: 'Copa · Botella 15 €', price: '3,10', tag: '', tagType: '' },
+      { id: 70, cat: 'vinos', name: 'Ribera del Duero — Melior', desc: 'Copa · Botella 15 €', price: '3,10', tag: '', tagType: '' },
+      { id: 71, cat: 'vinos', name: 'Rioja — Ramón Bilbao', desc: 'Copa · Botella 15 €', price: '3,10', tag: '', tagType: '' },
+      { id: 72, cat: 'vinos', name: 'Verdejo — Protos', desc: 'Copa · Botella 15 €', price: '3,00', tag: '', tagType: '' },
+      { id: 73, cat: 'vinos', name: 'Espumoso Yllera 5.0', desc: 'Botella (solo botella)', price: '14,00', tag: '', tagType: '' }
+    ];
+
+    const DEFAULT_HOURS = [
+      { day: 'Lunes', hours: '', closed: true },
+      { day: 'Martes', hours: '', closed: true },
+      { day: 'Miércoles', hours: '19:30 - 00:00', closed: false },
+      { day: 'Jueves', hours: '19:30 - 00:00', closed: false },
+      { day: 'Viernes', hours: '13:30 - 16:00 / 19:30 - 00:00', closed: false },
+      { day: 'Sábado', hours: '13:30 - 16:00 / 19:30 - 00:00', closed: false },
+      { day: 'Domingo', hours: '13:30 - 16:00 / 19:30 - 00:00', closed: false }
+    ];
+
+    const DEFAULT_CONFIG = {
+      phone: '853 84 11 90',
+      address: 'Av. de Andalucía, 41',
+      city: '23680 Alcalá la Real, Jaén',
+      instagram: 'botanicopizzapasta',
+      facebook: 'https://www.facebook.com/BotanicoPizzaPasta/',
+      password: 'botanico2026'
+    };
+
+    // ===== STATE =====
+    let categories = [];
+    let items = [];
+    let hours = [];
+    let config = {};
+    let currentFilter = 'all';
+    let deleteTargetId = null;
+
+    // ===== STORAGE =====
+    const STORAGE_KEY = 'botanico_admin_v2';
+
+    function loadData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        categories = data.categories || DEFAULT_CATEGORIES;
+        items = data.items || DEFAULT_ITEMS;
+        hours = data.hours || DEFAULT_HOURS;
+        config = { ...DEFAULT_CONFIG, ...data.config };
+      } else {
+        categories = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
+        items = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+        hours = JSON.parse(JSON.stringify(DEFAULT_HOURS));
+        config = { ...DEFAULT_CONFIG };
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ categories, items, hours, config }));
+    }
+
+    // ===== AUTH =====
+    function doLogin() {
+      const pw = document.getElementById('loginPassword').value;
+      if (pw === config.password) {
+        sessionStorage.setItem('botanico_auth', '1');
+        showApp();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    function doLogout() {
+      sessionStorage.removeItem('botanico_auth');
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('loginPassword').value = '';
+    }
+
+    function showApp() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      renderDashboard();
+      renderCarta();
+      renderHorario();
+      renderConfig();
+    }
+
+    // ===== NAVIGATION =====
+    document.getElementById('sidebarNav').addEventListener('click', e => {
+      const link = e.target.closest('a[data-section]');
+      if (!link) return;
+      e.preventDefault();
+      document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById('sec-' + link.dataset.section).classList.add('active');
+    });
+
+    // ===== DASHBOARD =====
+    function renderDashboard() {
+      const grid = document.getElementById('statsGrid');
+      grid.innerHTML = `
+        <div class="stat-card"><div class="label">Total platos</div><div class="value">${items.length}</div></div>
+        <div class="stat-card"><div class="label">Categorías</div><div class="value">${categories.length}</div></div>
+        <div class="stat-card"><div class="label">Pizzas</div><div class="value">${items.filter(i => i.cat.startsWith('pizza')).length}</div></div>
+        <div class="stat-card"><div class="label">Precio medio</div><div class="value">${(items.reduce((s, i) => s + parseFloat(i.price.replace(',', '.')), 0) / items.length).toFixed(2).replace('.', ',')} &euro;</div></div>
+      `;
+      const recent = document.getElementById('recentItems');
+      const last5 = [...items].sort((a, b) => b.id - a.id).slice(0, 5);
+      recent.innerHTML = last5.map(i => `
+        <li class="item-row">
+          <div class="item-info">
+            <div class="item-name">${i.name}</div>
+            <div class="item-desc">${getCatName(i.cat)}</div>
+          </div>
+          <div class="item-price">${i.price} &euro;</div>
+        </li>
+      `).join('');
+    }
+
+    // ===== CARTA =====
+    function renderCarta() {
+      // Category filter
+      const filter = document.getElementById('categoryFilter');
+      filter.innerHTML = `<button class="${currentFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">Todos</button>` +
+        categories.map(c => `<button class="${currentFilter === c.id ? 'active' : ''}" onclick="setFilter('${c.id}')">${c.name}</button>`).join('');
+
+      // Items list
+      const list = document.getElementById('itemList');
+      const filtered = currentFilter === 'all' ? items : items.filter(i => i.cat === currentFilter);
+
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state"><p>No hay platos en esta categoría</p></div>';
+        return;
+      }
+
+      list.innerHTML = filtered.map(i => `
+        <li class="item-row">
+          <div class="item-info">
+            <div class="item-name">${i.name}</div>
+            <div class="item-desc">${i.desc}</div>
+          </div>
+          ${i.tag ? `<span class="item-tag">${i.tag}</span>` : ''}
+          <div class="item-price">${i.price} &euro;</div>
+          <div class="item-actions">
+            <button class="btn btn-secondary btn-sm" onclick="editItem(${i.id})">Editar</button>
+            <button class="btn btn-danger btn-sm" onclick="openDelete(${i.id})">Eliminar</button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    function setFilter(cat) {
+      currentFilter = cat;
+      renderCarta();
+    }
+
+    function getCatName(id) {
+      const cat = categories.find(c => c.id === id);
+      return cat ? cat.name : id;
+    }
+
+    // ===== ITEM FORM =====
+    function openItemForm(id) {
+      const overlay = document.getElementById('formOverlay');
+      const catSelect = document.getElementById('formCategory');
+      catSelect.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+      if (id) {
+        const item = items.find(i => i.id === id);
+        document.getElementById('formTitle').textContent = 'Editar plato';
+        document.getElementById('formId').value = item.id;
+        document.getElementById('formName').value = item.name;
+        document.getElementById('formDesc').value = item.desc;
+        document.getElementById('formPrice').value = item.price;
+        document.getElementById('formCategory').value = item.cat;
+        document.getElementById('formTag').value = item.tag || '';
+        document.getElementById('formTagType').value = item.tagType || '';
+      } else {
+        document.getElementById('formTitle').textContent = 'Añadir plato';
+        document.getElementById('formId').value = '';
+        document.getElementById('formName').value = '';
+        document.getElementById('formDesc').value = '';
+        document.getElementById('formPrice').value = '';
+        document.getElementById('formTag').value = '';
+        document.getElementById('formTagType').value = '';
+      }
+      overlay.classList.add('open');
+    }
+
+    function closeItemForm() {
+      document.getElementById('formOverlay').classList.remove('open');
+    }
+
+    function editItem(id) { openItemForm(id); }
+
+    function saveItem() {
+      const id = document.getElementById('formId').value;
+      const data = {
+        name: document.getElementById('formName').value.trim(),
+        desc: document.getElementById('formDesc').value.trim(),
+        price: document.getElementById('formPrice').value.trim(),
+        cat: document.getElementById('formCategory').value,
+        tag: document.getElementById('formTag').value.trim(),
+        tagType: document.getElementById('formTagType').value
+      };
+
+      if (!data.name || !data.price) {
+        toast('Nombre y precio son obligatorios');
+        return;
+      }
+
+      if (id) {
+        const idx = items.findIndex(i => i.id === parseInt(id));
+        items[idx] = { ...items[idx], ...data };
+      } else {
+        const newId = items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
+        items.push({ id: newId, ...data });
+      }
+
+      saveData();
+      closeItemForm();
+      renderCarta();
+      renderDashboard();
+      toast(id ? 'Plato actualizado' : 'Plato añadido');
+    }
+
+    // ===== DELETE =====
+    function openDelete(id) {
+      deleteTargetId = id;
+      const item = items.find(i => i.id === id);
+      document.getElementById('deleteName').textContent = item.name;
+      document.getElementById('deleteOverlay').classList.add('open');
+    }
+
+    function closeDelete() {
+      document.getElementById('deleteOverlay').classList.remove('open');
+      deleteTargetId = null;
+    }
+
+    function confirmDelete() {
+      items = items.filter(i => i.id !== deleteTargetId);
+      saveData();
+      closeDelete();
+      renderCarta();
+      renderDashboard();
+      toast('Plato eliminado');
+    }
+
+    // ===== HORARIO =====
+    function renderHorario() {
+      const form = document.getElementById('horarioForm');
+      form.innerHTML = hours.map((h, i) => `
+        <div class="horario-row">
+          <span class="day-name">${h.day}</span>
+          <input type="text" value="${h.hours}" placeholder="Ej: 19:30 - 00:00" data-idx="${i}" ${h.closed ? 'disabled style="opacity:0.4"' : ''}>
+          <div class="toggle ${h.closed ? 'closed' : ''}" data-idx="${i}" onclick="toggleDay(${i})" title="${h.closed ? 'Cerrado' : 'Abierto'}"></div>
+        </div>
+      `).join('');
+    }
+
+    function toggleDay(idx) {
+      hours[idx].closed = !hours[idx].closed;
+      if (hours[idx].closed) hours[idx].hours = '';
+      renderHorario();
+    }
+
+    function saveHorario() {
+      document.querySelectorAll('#horarioForm input').forEach(input => {
+        const idx = parseInt(input.dataset.idx);
+        if (!hours[idx].closed) hours[idx].hours = input.value.trim();
+      });
+      saveData();
+      toast('Horario guardado');
+    }
+
+    // ===== CONFIG =====
+    function renderConfig() {
+      document.getElementById('cfgPhone').value = config.phone || '';
+      document.getElementById('cfgAddress').value = config.address || '';
+      document.getElementById('cfgCity').value = config.city || '';
+      document.getElementById('cfgInstagram').value = config.instagram || '';
+      document.getElementById('cfgFacebook').value = config.facebook || '';
+    }
+
+    function saveConfig() {
+      config.phone = document.getElementById('cfgPhone').value.trim();
+      config.address = document.getElementById('cfgAddress').value.trim();
+      config.city = document.getElementById('cfgCity').value.trim();
+      config.instagram = document.getElementById('cfgInstagram').value.trim();
+      config.facebook = document.getElementById('cfgFacebook').value.trim();
+      const newPw = document.getElementById('cfgPassword').value.trim();
+      if (newPw) config.password = newPw;
+      document.getElementById('cfgPassword').value = '';
+      saveData();
+      toast('Configuración guardada');
+    }
+
+    // ===== TOAST =====
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2500);
+    }
+
+    // ===== INIT =====
+    loadData();
+    if (sessionStorage.getItem('botanico_auth') === '1') {
+      showApp();
+    }
+  </script>
+
+</body>
+</html>
