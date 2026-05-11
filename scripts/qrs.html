@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>QRs Botánico — 14 mesas (imprimir A4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <style>
+    :root {
+      --navy: #0f3642;
+      --orange: #e97c3d;
+      --cream: #fffaea;
+      --teal: #8dd5c8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #ddd;
+      font-family: 'Montserrat', sans-serif;
+      padding: 20px;
+    }
+    .toolbar {
+      max-width: 210mm;
+      margin: 0 auto 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .toolbar input {
+      flex: 1;
+      min-width: 300px;
+      padding: 10px 14px;
+      border: 2px solid var(--navy);
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+    .toolbar button {
+      padding: 10px 22px;
+      background: var(--navy);
+      color: var(--cream);
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .toolbar button:hover { background: var(--orange); }
+    .toolbar .hint {
+      font-size: 12px;
+      color: #555;
+      width: 100%;
+    }
+
+    /* A4 imprimible */
+    .sheet {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--cream);
+      padding: 12mm;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6mm;
+      page-break-after: always;
+    }
+    .qr-card {
+      border: 2px dashed var(--navy);
+      border-radius: 10mm;
+      padding: 6mm 4mm 5mm;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      position: relative;
+    }
+    .qr-card::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 4px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+    .qr-logo {
+      font-family: 'Archivo Black', Impact, sans-serif;
+      font-size: 18pt;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      line-height: 1;
+      margin-bottom: 2mm;
+    }
+    .qr-logo span { color: var(--orange); }
+    .qr-tagline {
+      font-size: 7pt;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--navy);
+      opacity: 0.65;
+      margin-bottom: 4mm;
+    }
+    .qr-img {
+      width: 45mm;
+      height: 45mm;
+      padding: 2mm;
+      background: #fff;
+      border-radius: 4mm;
+    }
+    .qr-img canvas, .qr-img img { width: 100%; height: 100%; }
+    .qr-mesa {
+      margin-top: 4mm;
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 22pt;
+      color: var(--navy);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .qr-mesa-label {
+      font-size: 8pt;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-top: 1mm;
+    }
+    .qr-instr {
+      margin-top: 3mm;
+      font-size: 8pt;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.3;
+      max-width: 55mm;
+    }
+    .qr-footer {
+      margin-top: 3mm;
+      font-size: 6pt;
+      color: var(--navy);
+      opacity: 0.55;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .toolbar { display: none; }
+      .sheet { box-shadow: none; }
+    }
+    @page { size: A4; margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <input id="baseUrl" type="text" value="https://botanico-pizza.vercel.app/pedir">
+    <button onclick="regenerate()">Regenerar QRs</button>
+    <button onclick="window.print()">🖨️ Imprimir</button>
+    <div class="hint">Imprime en A4 → recorta cada cuadrado → plastifica o pega en cada mesa. 6 QRs por hoja, dos hojas para 14 mesas.</div>
+  </div>
+
+  <div id="sheets"></div>
+
+  <script>
+    // Tokens generados con HMAC-SHA256 del secreto (ver supabase/04_seed_mesas.sql)
+    const TOKENS = {
+      1:  'vz2azskjxq63',
+      2:  'ekp3c4o2qur2',
+      3:  'skhhnemdavfv',
+      4:  'qk3ssjgmefzj',
+      5:  'b3beo7kf36rp',
+      6:  'kfcb2lqcw7pr',
+      7:  'xu65nqjywhr7',
+      8:  '5pffa77kt56z',
+      9:  's6vxtio2wbqs',
+      10: 'nrzd2iu2k2fd',
+      11: 't6ijefdyhe4b',
+      12: 'aumqwbw6cefd',
+      13: 'sqkvlifvoep4',
+      14: 'fttxfabyt2fd',
+    };
+
+    function buildCard(mesa, baseUrl) {
+      const token = TOKENS[mesa];
+      const url = `${baseUrl}?mesa=${mesa}&t=${token}`;
+      const card = document.createElement('div');
+      card.className = 'qr-card';
+      card.innerHTML = `
+        <div class="qr-logo">Botáni<span>C</span>o</div>
+        <div class="qr-tagline">Pizza · Pasta</div>
+        <div class="qr-img"><canvas></canvas></div>
+        <div class="qr-mesa">${String(mesa).padStart(2,'0')}</div>
+        <div class="qr-mesa-label">Mesa</div>
+        <div class="qr-instr">Escanea con la cámara para ver la carta y pedir desde la mesa</div>
+        <div class="qr-footer">botanico-pizza.vercel.app</div>
+      `;
+      const canvas = card.querySelector('canvas');
+      QRCode.toCanvas(canvas, url, { width: 256, margin: 1, color: { dark: '#0f3642', light: '#ffffff' } });
+      return card;
+    }
+
+    function regenerate() {
+      const baseUrl = document.getElementById('baseUrl').value.trim() || 'https://botanico-pizza.vercel.app/pedir';
+      const container = document.getElementById('sheets');
+      container.innerHTML = '';
+
+      // 6 QRs por hoja → 14 mesas = 3 hojas (la última con 2 QRs)
+      for (let s = 0; s < 3; s++) {
+        const sheet = document.createElement('div');
+        sheet.className = 'sheet';
+        for (let i = 0; i < 6; i++) {
+          const mesa = s * 6 + i + 1;
+          if (mesa > 14) break;
+          sheet.appendChild(buildCard(mesa, baseUrl));
+        }
+        container.appendChild(sheet);
+      }
+    }
+
+    regenerate();
+  </script>
+</body>
+</html>
