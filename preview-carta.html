@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Botánico · Preview carta nueva</title>
+  <link rel="icon" type="image/jpeg" href="images/logo-botanico.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,400;1,600&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============ TOKENS ============ */
+    :root {
+      --navy: #0f3642;
+      --navy-deep: #082028;
+      --cream: #fffaea;
+      --teal: #8dd5c8;
+      --teal-soft: #c5e6dd;
+      --mint-bg: #dceedb;
+      --yellow: #ffd95a;
+      --mustard: #e9b94f;
+      --orange: #e97c3d;
+      --coral: #f4a88f;
+      --gold: #c9963c;
+      --gold-soft: #f3deaf;
+      --shadow-sm: 0 2px 12px rgba(8, 32, 40, 0.08);
+      --shadow-md: 0 12px 40px rgba(8, 32, 40, 0.12);
+      --shadow-lg: 0 30px 80px rgba(8, 32, 40, 0.25);
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'Montserrat', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--cream); color: var(--navy); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+    body { padding: 24px 16px 80px; }
+
+    /* ============ HEADER PREVIEW ============ */
+    .preview-header {
+      max-width: 1280px;
+      margin: 0 auto 40px;
+      text-align: center;
+    }
+    .preview-pill {
+      display: inline-block;
+      padding: 6px 14px;
+      background: var(--navy);
+      color: var(--cream);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .preview-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      margin-top: 14px;
+      letter-spacing: -0.5px;
+    }
+    .preview-header p { color: rgba(15,54,66,0.65); margin-top: 8px; font-size: 14px; }
+
+    /* ============ CATEGORY TABS ============ */
+    .tabs {
+      max-width: 1280px;
+      margin: 0 auto 28px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex-shrink: 0;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: white;
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .tab.active { background: var(--navy); color: var(--cream); }
+    .tab:hover:not(.active) { transform: translateY(-1px); }
+
+    /* ============ GRID ============ */
+    .grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    @media (min-width: 640px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+      body { padding: 32px 24px 100px; }
+    }
+    @media (min-width: 1000px) {
+      .grid { grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    }
+
+    /* ============ CARD ============ */
+    .card {
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      view-transition-name: none;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+    .card:active { transform: translateY(-2px) scale(0.99); }
+
+    .card-media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--teal-soft), var(--mint-bg));
+    }
+    @media (min-width: 640px) {
+      .card-media { aspect-ratio: 1 / 1; }
+    }
+    .card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .card:hover .card-media img { transform: scale(1.06); }
+
+    /* Placeholder for cards without photo */
+    .card-media.placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+    }
+    .card-media.placeholder::before {
+      content: '🍕';
+      font-size: 80px;
+      opacity: 0.25;
+      filter: grayscale(0.2);
+    }
+    .card-media.placeholder::after {
+      content: 'Próximamente';
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(15,54,66,0.45);
+    }
+
+    /* Image fade-in */
+    .card-media img {
+      opacity: 0;
+      animation: fadeIn 0.5s 0.1s forwards ease;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* Bottom gradient + price on photo */
+    .card-media-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(8, 32, 40, 0.7) 0%, rgba(8, 32, 40, 0) 45%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 14px 16px;
+    }
+    .card-price {
+      color: white;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.4);
+    }
+    .card-allergens-mini {
+      display: flex;
+      gap: 4px;
+    }
+    .card-allergens-mini span {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    /* Top tags */
+    .card-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+      z-index: 2;
+    }
+    .card-tag.house {
+      background: linear-gradient(135deg, var(--gold), #b07a1a);
+      color: white;
+      box-shadow: 0 4px 14px rgba(201, 150, 60, 0.4);
+    }
+    .card-tag.new {
+      background: var(--orange);
+      color: white;
+      box-shadow: 0 4px 14px rgba(233, 124, 61, 0.4);
+    }
+    .card-spicy {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      font-size: 12px;
+      z-index: 2;
+    }
+
+    /* Body */
+    .card-body { padding: 18px 18px 20px; }
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: rgba(15, 54, 66, 0.65);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* For cards WITHOUT image, hide redundant price (it's still in card-body) */
+    .card.no-media { background: var(--teal-soft); }
+    .card.no-media:nth-child(3n+2) { background: var(--yellow); }
+    .card.no-media:nth-child(3n+3) { background: var(--mint-bg); }
+    .card.no-media .card-media { display: none; }
+    .card.no-media .card-body { padding: 22px 20px 24px; }
+    .card.no-media .card-price-inline {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-top: 12px;
+      display: block;
+    }
+
+    /* ============ MODAL ============ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 32, 40, 0.55);
+      backdrop-filter: blur(8px);
+      z-index: 99;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .modal {
+      position: fixed;
+      z-index: 100;
+      background: white;
+      box-shadow: var(--shadow-lg);
+      pointer-events: none;
+      opacity: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Mobile = bottom sheet */
+    @media (max-width: 767px) {
+      .modal {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: 92dvh;
+        border-radius: 28px 28px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+      }
+      .modal.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+    }
+    /* Desktop = centered modal */
+    @media (min-width: 768px) {
+      .modal {
+        top: 50%;
+        left: 50%;
+        width: min(680px, 90vw);
+        max-height: 88vh;
+        border-radius: 24px;
+        transform: translate(-50%, -48%) scale(0.96);
+        opacity: 0;
+        transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+      }
+      .modal.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 4px;
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+    @media (min-width: 768px) { .modal-handle { display: none; } }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 3;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .modal-close:hover { transform: scale(1.06); }
+    .modal-close svg { width: 18px; height: 18px; }
+
+    .modal-share {
+      position: absolute;
+      top: 16px;
+      right: 64px;
+      z-index: 3;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-share svg { width: 16px; height: 16px; }
+
+    .modal-media {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--teal-soft), var(--mint-bg));
+    }
+    .modal-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .modal-media-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(255,255,255,0.4) 0%, rgba(0,0,0,0) 40%);
+      pointer-events: none;
+    }
+
+    .modal-tag-row {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: flex;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .modal-body { padding: 26px 22px 0; }
+    @media (min-width: 768px) { .modal-body { padding: 30px 32px 0; } }
+
+    .modal-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 8px;
+    }
+    .modal-name {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 38px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .modal-price {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 5vw, 32px);
+      font-weight: 700;
+      color: var(--gold);
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .modal-desc {
+      font-size: 15px;
+      color: rgba(15, 54, 66, 0.72);
+      line-height: 1.55;
+      margin-top: 10px;
+    }
+
+    .modal-section { margin-top: 26px; }
+    .modal-section-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(15, 54, 66, 0.45);
+      margin-bottom: 12px;
+    }
+
+    .ingredients {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .ingredient {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--mint-bg);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .ingredient::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--navy);
+    }
+
+    .allergens {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .allergen {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: white;
+      border: 1.5px solid rgba(15, 54, 66, 0.1);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .allergen-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--gold-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .story-card {
+      background: linear-gradient(135deg, var(--navy), var(--navy-deep));
+      color: var(--cream);
+      border-radius: 18px;
+      padding: 18px 20px;
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .story-icon {
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255, 217, 90, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .story-text { flex: 1; }
+    .story-text h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .story-text p {
+      font-size: 12px;
+      opacity: 0.75;
+      line-height: 1.4;
+    }
+
+    .pair-card {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+      background: var(--gold-soft);
+      border-radius: 18px;
+      margin-top: 16px;
+    }
+    .pair-emoji {
+      flex-shrink: 0;
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+    .pair-text { flex: 1; }
+    .pair-text small {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(15,54,66,0.5);
+    }
+    .pair-text p {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* CTA sticky */
+    .modal-cta-row {
+      position: sticky;
+      bottom: 0;
+      background: white;
+      padding: 16px 22px calc(16px + env(safe-area-inset-bottom));
+      display: flex;
+      gap: 10px;
+      box-shadow: 0 -10px 30px rgba(8, 32, 40, 0.05);
+      margin-top: 28px;
+    }
+    @media (min-width: 768px) { .modal-cta-row { padding: 18px 32px; } }
+
+    .qty-stepper {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(15, 54, 66, 0.06);
+      flex-shrink: 0;
+    }
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--navy);
+      box-shadow: var(--shadow-sm);
+    }
+    .qty-value { font-weight: 700; min-width: 14px; text-align: center; }
+
+    .cta-add {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: var(--cream);
+      border: none;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 24px rgba(8, 32, 40, 0.3);
+    }
+    .cta-add:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(8, 32, 40, 0.4); }
+    .cta-add:active { transform: translateY(0) scale(0.98); }
+
+    body.modal-open { overflow: hidden; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120%);
+      background: var(--navy);
+      color: var(--cream);
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 200;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: var(--shadow-md);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div class="preview-header">
+    <span class="preview-pill">PREVIEW · NUEVA CARTA</span>
+    <h1>Carta con foto, ingredientes y maridaje</h1>
+    <p>Toca cualquier pizza para ver el detalle. Móvil: sheet · Desktop: modal centrado.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active">Novedades</button>
+    <button class="tab">Clásicas</button>
+    <button class="tab">Especiales</button>
+    <button class="tab">Pasta</button>
+    <button class="tab">Postres</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="overlay"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-handle"></div>
+    <button class="modal-share" id="share-btn" aria-label="Compartir">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+    </button>
+    <button class="modal-close" id="close-btn" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+    </button>
+
+    <div id="modal-content"></div>
+  </div>
+
+  <div class="toast" id="toast">Añadido al pedido</div>
+
+  <script>
+    /* ============ DATA ============ */
+    const pizzas = [
+      {
+        id: 'carbonara',
+        name: 'Carbonara',
+        price: '12,20 €',
+        desc: 'Base de nata, mozzarella 100%, bacon, champiñones y cebolla caramelizada.',
+        photo: 'images/pizza-carbonara.png',
+        tag: { label: 'Imprescindible', type: 'house' },
+        spicy: 0,
+        ingredients: ['Nata fresca', 'Mozzarella 100%', 'Bacon', 'Champiñón laminado', 'Cebolla caramelizada', 'Pimienta negra'],
+        allergens: ['Gluten', 'Lactosa', 'Huevo'],
+        oven: { temp: '380°C', time: '90s' },
+        pair: { emoji: '🍷', label: 'Maridaje sugerido', name: 'Verdejo joven · D.O. Rueda' },
+      },
+      {
+        id: 'watami',
+        name: 'Watami',
+        price: '16,80 €',
+        desc: 'Tomate, mozzarella, atún macerado en soja, mango, wakame, aguacate, kimchi mayo y sésamo negro.',
+        photo: null,
+        tag: { label: 'Última incorporación', type: 'new' },
+        spicy: 1,
+        ingredients: ['Tomate San Marzano', 'Mozzarella 100%', 'Atún fresco', 'Salsa de mango', 'Wakame', 'Aguacate', 'Stracciatella', 'Mayonesa kimchi', 'Sésamo negro'],
+        allergens: ['Gluten', 'Lactosa', 'Pescado', 'Sésamo', 'Soja'],
+        oven: { temp: '380°C', time: '90s' },
+        pair: { emoji: '🍶', label: 'Maridaje atrevido', name: 'Sake seco frío' },
+      },
+      {
+        id: 'botanico',
+        name: 'Botánico',
+        price: '15,80 €',
+        desc: 'Base de ricotta, mozzarella, yema, setas, jamón serrano ibérico y queso de cabra curado de la zona.',
+        photo: null,
+        tag: { label: 'De la casa', type: 'house' },
+        spicy: 0,
+        ingredients: ['Ricotta', 'Mozzarella 100%', 'Yema de huevo', 'Mezcla de setas', 'Jamón serrano ibérico', 'Queso de cabra curado'],
+        allergens: ['Gluten', 'Lactosa', 'Huevo'],
+        oven: { temp: '380°C', time: '90s' },
+        pair: { emoji: '🍇', label: 'Maridaje sugerido', name: 'Tempranillo joven' },
+      },
+      {
+        id: 'margarita',
+        name: 'Margarita Original',
+        price: '10,50 €',
+        desc: 'Base de tomate, mozzarella 100% de búffala, albahaca fresca y aceite de oliva virgen extra.',
+        photo: null,
+        tag: null,
+        spicy: 0,
+        ingredients: ['Tomate San Marzano', 'Mozzarella de búffala', 'Albahaca fresca', 'AOVE'],
+        allergens: ['Gluten', 'Lactosa'],
+        oven: { temp: '380°C', time: '90s' },
+        pair: { emoji: '🍅', label: 'Maridaje clásico', name: 'Chianti DOCG' },
+      },
+      {
+        id: 'pepperoni',
+        name: 'Pepperoni',
+        price: '10,80 €',
+        desc: 'Base de tomate, mozzarella 100% y pepperoni picante italiano.',
+        photo: null,
+        tag: { label: 'Novedad', type: 'new' },
+        spicy: 2,
+        ingredients: ['Tomate San Marzano', 'Mozzarella 100%', 'Pepperoni picante'],
+        allergens: ['Gluten', 'Lactosa'],
+        oven: { temp: '380°C', time: '90s' },
+        pair: { emoji: '🍺', label: 'Maridaje sugerido', name: 'IPA local' },
+      },
+      {
+        id: 'zucca',
+        name: 'Zucca',
+        price: '14,20 €',
+        desc: 'Calabaza asada, mozzarella, setas, ricotta cremosa, guanciale crujiente y scamorza ahumada.',
+        photo: null,
+        tag: null,
+        spicy: 0,
+        ingredients: ['Calabaza asada', 'Mozzarella 100%', 'Mezcla de setas', 'Ricotta', 'Guanciale', 'Scamorza ahumada'],
+        allergens: ['Gluten', 'Lactosa'],
+        oven: { temp: '380°C', time: '90s' },
+        pair: { emoji: '🍂', label: 'Maridaje otoñal', name: 'Garnacha blanca' },
+      },
+    ];
+
+    const allergenIcons = {
+      'Gluten': '🌾', 'Lactosa': '🥛', 'Huevo': '🥚', 'Pescado': '🐟',
+      'Sésamo': '🌰', 'Soja': '🌱', 'Frutos secos': '🥜', 'Crustáceos': '🦐',
+    };
+
+    /* ============ RENDER GRID ============ */
+    const grid = document.getElementById('grid');
+    grid.innerHTML = pizzas.map(p => `
+      <article class="card ${!p.photo ? 'no-media' : ''}" data-id="${p.id}" tabindex="0">
+        ${p.tag ? `<span class="card-tag ${p.tag.type}">${p.tag.label}</span>` : ''}
+        ${p.spicy ? `<span class="card-spicy">${'🌶'.repeat(p.spicy)}</span>` : ''}
+        <div class="card-media ${!p.photo ? 'placeholder' : ''}">
+          ${p.photo ? `<img src="${p.photo}" alt="${p.name}" loading="lazy">` : ''}
+          ${p.photo ? `
+            <div class="card-media-overlay">
+              <div class="card-allergens-mini">
+                ${p.allergens.slice(0,3).map(a => `<span title="${a}">${allergenIcons[a]||'•'}</span>`).join('')}
+              </div>
+              <span class="card-price">${p.price}</span>
+            </div>` : ''}
+        </div>
+        <div class="card-body">
+          <h3 class="card-name">${p.name}</h3>
+          <p class="card-desc">${p.desc}</p>
+          ${!p.photo ? `<span class="card-price-inline">${p.price}</span>` : ''}
+        </div>
+      </article>
+    `).join('');
+
+    /* ============ MODAL ============ */
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modal-content');
+    let qty = 1;
+
+    function openModal(id) {
+      const p = pizzas.find(x => x.id === id);
+      if (!p) return;
+      qty = 1;
+
+      modalContent.innerHTML = `
+        <div class="modal-media ${!p.photo ? 'placeholder' : ''}" style="${!p.photo ? `display:flex;align-items:center;justify-content:center;font-size:80px;opacity:0.4;` : ''}">
+          ${p.photo ? `<img src="${p.photo}" alt="${p.name}"><div class="modal-media-gradient"></div>` : '🍕'}
+          ${p.tag ? `<div class="modal-tag-row"><span class="card-tag ${p.tag.type}">${p.tag.label}</span></div>` : ''}
+        </div>
+        <div class="modal-body">
+          <div class="modal-header-row">
+            <h2 class="modal-name">${p.name}</h2>
+            <span class="modal-price">${p.price}</span>
+          </div>
+          <p class="modal-desc">${p.desc}</p>
+
+          <div class="modal-section">
+            <p class="modal-section-title">Ingredientes</p>
+            <div class="ingredients">
+              ${p.ingredients.map(i => `<span class="ingredient">${i}</span>`).join('')}
+            </div>
+          </div>
+
+          <div class="modal-section">
+            <p class="modal-section-title">Alérgenos</p>
+            <div class="allergens">
+              ${p.allergens.map(a => `<span class="allergen"><span class="allergen-icon">${allergenIcons[a]||'•'}</span>${a}</span>`).join('')}
+            </div>
+          </div>
+
+          <div class="story-card">
+            <div class="story-icon">🔥</div>
+            <div class="story-text">
+              <h4>Horneada en horno de leña</h4>
+              <p>${p.oven.temp} durante ${p.oven.time}. Masa de fermentación lenta de 48 horas.</p>
+            </div>
+          </div>
+
+          <div class="pair-card">
+            <div class="pair-emoji">${p.pair.emoji}</div>
+            <div class="pair-text">
+              <small>${p.pair.label}</small>
+              <p>${p.pair.name}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-cta-row">
+          <div class="qty-stepper">
+            <button class="qty-btn" id="qty-minus">−</button>
+            <span class="qty-value" id="qty-value">1</span>
+            <button class="qty-btn" id="qty-plus">+</button>
+          </div>
+          <button class="cta-add" id="cta-add">Añadir al pedido · ${p.price}</button>
+        </div>
+      `;
+
+      document.body.classList.add('modal-open');
+      overlay.classList.add('open');
+      requestAnimationFrame(() => modal.classList.add('open'));
+
+      document.getElementById('qty-plus').onclick = () => { qty++; document.getElementById('qty-value').textContent = qty; };
+      document.getElementById('qty-minus').onclick = () => { if (qty > 1) qty--; document.getElementById('qty-value').textContent = qty; };
+      document.getElementById('cta-add').onclick = () => { showToast(`${qty} × ${p.name} añadida${qty>1?'s':''}`); closeModal(); };
+
+      history.replaceState(null, '', `#pizza-${id}`);
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      overlay.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      history.replaceState(null, '', location.pathname);
+    }
+
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => openModal(card.dataset.id));
+      card.addEventListener('keydown', e => { if (e.key === 'Enter') openModal(card.dataset.id); });
+    });
+
+    document.getElementById('close-btn').addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    document.getElementById('share-btn').addEventListener('click', async () => {
+      const url = location.href;
+      if (navigator.share) {
+        try { await navigator.share({ url, title: 'Botánico · Carta' }); } catch {}
+      } else {
+        navigator.clipboard.writeText(url);
+        showToast('Enlace copiado');
+      }
+    });
+
+    /* ============ TOAST ============ */
+    const toast = document.getElementById('toast');
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    /* ============ DEEP LINK ============ */
+    if (location.hash.startsWith('#pizza-')) {
+      openModal(location.hash.replace('#pizza-', ''));
+    }
+  </script>
+</body>
+</html>
