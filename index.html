@@ -143,18 +143,10 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: var(--navy);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--cream);
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      line-height: 1;
-      border: 2px solid var(--navy);
+      object-fit: cover;
       flex-shrink: 0;
+      display: block;
     }
-    .navbar.scrolled .brand-circle { border-color: var(--teal); }
     .navbar-brand-text {
       display: flex;
       flex-direction: column;
@@ -1746,7 +1738,7 @@
   <nav class="navbar" id="navbar">
     <div class="container">
       <a href="#" class="navbar-brand">
-        <div class="brand-circle"><span class="logo-b">B</span></div>
+        <img class="brand-circle" src="images/logo-botanico.jpg" alt="" aria-hidden="true">
         <div class="navbar-brand-text">
           <div class="name"><span class="logo-b">B</span>otáni<span class="logo-c">C</span>o</div>
           <div class="tagline">Pizza &middot; Pasta</div>
@@ -2754,7 +2746,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
-          <div class="brand-circle"><span class="logo-b">B</span></div>
+          <img class="brand-circle" src="images/logo-botanico.jpg" alt="" aria-hidden="true">
           <div>
             <div class="name"><span class="logo-b">B</span>otáni<span class="logo-c">C</span>o</div>
             <p>Av. de Andalucía, 41 &mdash; 23680 Alcalá la Real, Jaén</p>
