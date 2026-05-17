@@ -3249,7 +3249,6 @@
         }
         // Bottom row (tag + alérgenos)
         if (!item.querySelector('.carta-item-bottom')) {
-          const name = item.querySelector('.carta-item-name')?.textContent.trim() || '';
           // título completo en tooltip por si trunca
           const nameEl = item.querySelector('.carta-item-name');
           if (nameEl && !nameEl.hasAttribute('title')) nameEl.setAttribute('title', name);
