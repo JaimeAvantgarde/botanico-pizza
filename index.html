@@ -972,6 +972,98 @@
     .allergen-dot.allergen-crustaceos { background: #d97a4a; }
     .allergen-dot.allergen-moluscos { background: #5a6a8a; }
     .allergen-dot.allergen-cacahuetes { background: #b07550; }
+    /* ===== CARTA ITEM CON FOTO ===== */
+    .carta-item.has-photo {
+      padding: 0;
+      overflow: hidden;
+      background: var(--cream) !important;
+      border: none;
+      box-shadow: 0 6px 18px rgba(8, 32, 40, 0.08);
+    }
+    .carta-item.has-photo:hover {
+      box-shadow: 0 18px 50px rgba(8, 32, 40, 0.18);
+    }
+    .carta-item-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--teal-soft), var(--mint-bg));
+    }
+    @media (min-width: 768px) {
+      .carta-item-media { aspect-ratio: 1 / 1; }
+    }
+    .carta-item-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .carta-item.has-photo:hover .carta-item-media img {
+      transform: scale(1.06);
+    }
+    .carta-item-media-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(8, 32, 40, 0.72) 0%, rgba(8, 32, 40, 0) 50%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 14px 16px;
+    }
+    .carta-item-media-price {
+      color: white;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.45);
+    }
+    .carta-item.has-photo .carta-item-body {
+      padding: 18px 20px 22px;
+    }
+    .carta-item.has-photo .carta-item-header {
+      padding-right: 36px;
+      margin-bottom: 8px;
+    }
+    .carta-item.has-photo .carta-item-name {
+      font-size: 1.1rem;
+      max-width: none;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+    .carta-item.has-photo .carta-item-dots,
+    .carta-item.has-photo .carta-item-header .carta-item-price {
+      display: none;
+    }
+    .carta-item.has-photo .carta-item-desc {
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 500;
+      font-size: 0.82rem;
+      opacity: 0.7;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .carta-item.has-photo .carta-item-plus {
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--navy);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      top: 12px;
+      right: 12px;
+    }
+    .carta-item.has-photo:hover .carta-item-plus {
+      background: var(--orange);
+      color: white;
+    }
+
     .carta-item-allergens {
       display: flex;
       flex-wrap: wrap;
@@ -2871,7 +2963,7 @@
         'prosciutto': 'images/pizza-clasica-champinones.png',
         'pepparoni': 'images/pizza-clasica-champinones.png',
         'pepperoni': 'images/pizza-clasica-champinones.png',
-        'carbonara': 'images/pizza-clasica-champinones.png',
+        'carbonara': 'images/pizza-carbonara.png',
         '4 estaciones': 'images/pizza-clasica-champinones.png',
         '4 quesos': 'images/pizza-clasica-champinones.png',
         '5 quesos': 'images/pizza-clasica-champinones.png',
@@ -3114,11 +3206,40 @@
       }
     });
 
-    // marca cards como interactivas + añade el "+" indicador + chips de alérgenos
+    // Fotos REALES disponibles para mostrar en la grid (no placeholders genéricos).
+    // Añadir slug normalizado → ruta de la imagen a medida que se vayan haciendo fotos.
+    const REAL_PHOTOS = {
+      'carbonara': 'images/pizza-carbonara.png',
+    };
+
+    // marca cards como interactivas + añade el "+" indicador + chips de alérgenos + foto si la tiene
     function decorateCartaItems() {
       document.querySelectorAll('.carta-menu-wrapper .carta-item').forEach(item => {
         if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
         if (!item.hasAttribute('role')) item.setAttribute('role', 'button');
+
+        // Inyectar foto real si está disponible y aún no se inyectó
+        const name = item.querySelector('.carta-item-name')?.textContent.trim() || '';
+        const slug = normalizeKey(name);
+        const photo = REAL_PHOTOS[slug];
+        if (photo && !item.classList.contains('has-photo')) {
+          const price = item.querySelector('.carta-item-price')?.textContent.trim() || '';
+          const media = document.createElement('div');
+          media.className = 'carta-item-media';
+          media.innerHTML = `
+            <img src="${photo}" alt="${name}" loading="lazy">
+            <div class="carta-item-media-overlay">
+              <span class="carta-item-media-price">${price}</span>
+            </div>`;
+          // Envolver contenido existente en .carta-item-body
+          const body = document.createElement('div');
+          body.className = 'carta-item-body';
+          while (item.firstChild) body.appendChild(item.firstChild);
+          item.appendChild(media);
+          item.appendChild(body);
+          item.classList.add('has-photo');
+        }
+
         if (!item.querySelector('.carta-item-plus')) {
           const plus = document.createElement('span');
           plus.className = 'carta-item-plus';
@@ -3161,7 +3282,9 @@
               }
               bottom.appendChild(row);
             }
-            item.appendChild(bottom);
+            // si el item tiene foto, el bottom va dentro del body
+            const target = item.querySelector('.carta-item-body') || item;
+            target.appendChild(bottom);
           }
         }
       });
