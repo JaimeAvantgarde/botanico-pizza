@@ -863,28 +863,33 @@
       margin-bottom: 12px;
     }
     .dish-modal-ingredients {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
       margin-bottom: 18px;
+      padding: 0;
+      list-style: none;
     }
     .dish-modal-ingredients li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: var(--mint-bg);
+      border-radius: 999px;
+      font-size: 0.82rem;
       color: var(--navy);
-      line-height: 1.45;
-      font-weight: 500;
+      font-weight: 600;
+      line-height: 1.2;
     }
     .dish-modal-ingredients li::before {
       content: '';
       flex-shrink: 0;
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: var(--orange);
-      margin-top: 8px;
+      background: var(--navy);
+      margin-top: 0;
     }
     .dish-modal-empty {
       font-size: 0.9rem;
@@ -3206,11 +3211,12 @@
       }
     });
 
-    // Fotos REALES disponibles para mostrar en la grid (no placeholders genéricos).
-    // Añadir slug normalizado → ruta de la imagen a medida que se vayan haciendo fotos.
-    const REAL_PHOTOS = {
-      'carbonara': 'images/pizza-carbonara.png',
-    };
+    // Categorías que muestran foto en la grid (no solo en el modal).
+    // El resto (bebidas, vinos) mantiene el diseño colorido por color.
+    const CATEGORIES_WITH_PHOTO = new Set([
+      'pizzas-novedades', 'pizzas-clasicas', 'pizzas-especiales',
+      'pasta', 'entrantes', 'ensaladas', 'postres',
+    ]);
 
     // marca cards como interactivas + añade el "+" indicador + chips de alérgenos + foto si la tiene
     function decorateCartaItems() {
@@ -3218,11 +3224,12 @@
         if (!item.hasAttribute('tabindex')) item.setAttribute('tabindex', '0');
         if (!item.hasAttribute('role')) item.setAttribute('role', 'button');
 
-        // Inyectar foto real si está disponible y aún no se inyectó
+        // Inyectar foto (real si la hay, placeholder por categoría si no)
         const name = item.querySelector('.carta-item-name')?.textContent.trim() || '';
-        const slug = normalizeKey(name);
-        const photo = REAL_PHOTOS[slug];
-        if (photo && !item.classList.contains('has-photo')) {
+        const categoryId = item.closest('.carta-category')?.id || '';
+        const photo = imageForDish(name, categoryId);
+        const showPhoto = photo && CATEGORIES_WITH_PHOTO.has(categoryId);
+        if (showPhoto && !item.classList.contains('has-photo')) {
           const price = item.querySelector('.carta-item-price')?.textContent.trim() || '';
           const media = document.createElement('div');
           media.className = 'carta-item-media';
