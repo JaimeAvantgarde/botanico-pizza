@@ -29,8 +29,8 @@
       --coral: #a85a35;       /* teja antigua */
       --mustard: #b8862a;     /* ocre dorado viejo */
       --yellow-pastel: #d6b878; /* miel envejecida */
-      --cream: #e8d4a5;       /* kraft marfil */
-      --cream-bg: #d4b885;    /* kraft tostado */
+      --cream: #f6f0e0;       /* papel marfil claro */
+      --cream-bg: #efe7d4;    /* Bg/50 — crema pálida */
       --leaf-dark: #2f3618;   /* oliva profundo */
       --white: #f5e8c8;
       --text: #1a0e06;        /* tinta sepia oscura */
@@ -53,7 +53,7 @@
       --radius-sm: 2px;
     }
 
-    /* Textura papel kraft envejecido + manchas de tiempo */
+    /* Textura papel kraft envejecido + manchas de tiempo (suave para fondo claro) */
     body::before {
       content: '';
       position: fixed;
@@ -61,25 +61,14 @@
       pointer-events: none;
       z-index: 0;
       background-image:
-        radial-gradient(ellipse at 15% 12%, rgba(58,30,15,0.18) 0, transparent 35%),
-        radial-gradient(ellipse at 85% 88%, rgba(58,30,15,0.22) 0, transparent 40%),
-        radial-gradient(circle at 72% 22%, rgba(120,60,20,0.10) 0, transparent 18%),
-        radial-gradient(circle at 30% 75%, rgba(120,60,20,0.10) 0, transparent 22%),
-        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.18  0 0 0 0 0.11  0 0 0 0 0.04  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-      opacity: 0.85;
+        radial-gradient(ellipse at 15% 12%, rgba(58,30,15,0.06) 0, transparent 35%),
+        radial-gradient(ellipse at 85% 88%, rgba(58,30,15,0.08) 0, transparent 40%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.18  0 0 0 0 0.11  0 0 0 0 0.04  0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      opacity: 0.6;
       mix-blend-mode: multiply;
     }
-    /* Tabla de madera de fondo absoluta */
     body {
-      background:
-        repeating-linear-gradient(
-          90deg,
-          var(--cream-bg) 0,
-          var(--cream-bg) 220px,
-          color-mix(in srgb, var(--cream-bg) 92%, var(--wood-mid)) 220px,
-          color-mix(in srgb, var(--cream-bg) 92%, var(--wood-mid)) 222px
-        ),
-        var(--cream-bg) !important;
+      background: var(--cream-bg) !important;
     }
 
     /* ========== RESET ========== */
