@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Botánico Pizza &middot; Pasta | Alcalá la Real</title>
+  <title>Botánico Pizza &middot; Pasta | Alcalá la Real (Rústico)</title>
   <meta name="description" content="Pizza artesanal al horno de leña en Alcalá la Real. Masa madre, ingredientes frescos y el sabor de la tradición italiana.">
   <meta name="keywords" content="pizza, pasta, Alcalá la Real, horno de leña, pizza artesanal, restaurante italiano, Botánico">
   <meta property="og:title" content="Botánico Pizza Pasta | Alcalá la Real">
@@ -14,36 +14,72 @@
   <link rel="apple-touch-icon" href="images/logo-botanico.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    /* ========== TOKENS ========== */
+    /* ========== TOKENS (rústico antiguo / osteria) ========== */
     :root {
-      --navy: #0f3642;
-      --navy-deep: #082028;
-      --teal: #8dd5c8;
-      --teal-soft: #c5e6dd;
-      --mint: #c9e5ba;
-      --mint-bg: #dceedb;
-      --orange: #e97c3d;
-      --coral: #f4a88f;
-      --mustard: #f5d36e;
-      --yellow-pastel: #fbeea1;
-      --cream: #fffaea;
-      --cream-bg: #fffcef;
-      --leaf-dark: #1a4035;
-      --white: #ffffff;
-      --text: #0f3642;
-      --text-muted: #5a7077;
+      /* Paleta tierra-madera-papel kraft envejecido */
+      --navy: #2a1810;        /* madera nogal oscuro */
+      --navy-deep: #14090a;   /* casi negro tostado */
+      --teal: #6b6b32;        /* olivo apagado */
+      --teal-soft: #c9bd96;   /* arpillera / lino crudo */
+      --mint: #8e8c4d;        /* oliva polvoriento */
+      --mint-bg: #d8c190;     /* kraft claro */
+      --orange: #9c3a1c;      /* sienna quemado */
+      --coral: #a85a35;       /* teja antigua */
+      --mustard: #b8862a;     /* ocre dorado viejo */
+      --yellow-pastel: #d6b878; /* miel envejecida */
+      --cream: #e8d4a5;       /* kraft marfil */
+      --cream-bg: #d4b885;    /* kraft tostado */
+      --leaf-dark: #2f3618;   /* oliva profundo */
+      --white: #f5e8c8;
+      --text: #1a0e06;        /* tinta sepia oscura */
+      --text-muted: #5a4628;  /* sepia humo */
 
-      --font-display: 'Archivo Black', Impact, 'Helvetica Inserat', sans-serif;
-      --font-body: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      /* Tonos madera para superficies */
+      --wood-dark: #3d2415;
+      --wood-mid: #5a3a22;
+      --wood-light: #7a4d2d;
+
+      --font-display: 'Fraunces', 'Playfair Display', Georgia, serif;
+      --font-body: 'Lora', Georgia, serif;
+      --font-script: 'Caveat', cursive;
 
       --section-padding: clamp(80px, 12vw, 140px);
       --container-width: 1200px;
 
-      --radius-lg: 44px;
-      --radius-md: 24px;
-      --radius-sm: 12px;
+      --radius-lg: 4px;
+      --radius-md: 3px;
+      --radius-sm: 2px;
+    }
+
+    /* Textura papel kraft envejecido + manchas de tiempo */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(ellipse at 15% 12%, rgba(58,30,15,0.18) 0, transparent 35%),
+        radial-gradient(ellipse at 85% 88%, rgba(58,30,15,0.22) 0, transparent 40%),
+        radial-gradient(circle at 72% 22%, rgba(120,60,20,0.10) 0, transparent 18%),
+        radial-gradient(circle at 30% 75%, rgba(120,60,20,0.10) 0, transparent 22%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.18  0 0 0 0 0.11  0 0 0 0 0.04  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      opacity: 0.85;
+      mix-blend-mode: multiply;
+    }
+    /* Tabla de madera de fondo absoluta */
+    body {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          var(--cream-bg) 0,
+          var(--cream-bg) 220px,
+          color-mix(in srgb, var(--cream-bg) 92%, var(--wood-mid)) 220px,
+          color-mix(in srgb, var(--cream-bg) 92%, var(--wood-mid)) 222px
+        ),
+        var(--cream-bg) !important;
     }
 
     /* ========== RESET ========== */
@@ -72,30 +108,33 @@
     }
     .section-label {
       display: inline-block;
-      background: var(--navy);
-      color: var(--cream);
-      font-family: var(--font-body);
-      font-size: 0.65rem;
-      font-weight: 800;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      padding: 7px 18px;
-      border-radius: 50px;
-      margin-bottom: 20px;
+      background: transparent;
+      color: var(--orange);
+      font-family: var(--font-script);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: none;
+      padding: 0 0 4px;
+      border-radius: 0;
+      border-bottom: 2px solid var(--orange);
+      margin-bottom: 14px;
     }
     .section-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-weight: 900;
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(2.4rem, 5.4vw, 3.8rem);
       color: var(--navy);
-      line-height: 1.1;
+      line-height: 1.05;
       letter-spacing: -0.5px;
       margin-bottom: 24px;
+      font-variation-settings: "opsz" 144, "SOFT" 100;
     }
     .section-title em {
       font-style: italic;
       font-weight: 500;
       color: var(--orange);
+      font-variation-settings: "opsz" 144, "SOFT" 100;
     }
     .fade-in {
       opacity: 0;
@@ -123,11 +162,21 @@
       transition: all 0.4s ease;
     }
     .navbar.scrolled {
-      background: rgba(8, 32, 40, 0.95);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background:
+        linear-gradient(rgba(20,9,5,0.94), rgba(20,9,5,0.94)),
+        repeating-linear-gradient(
+          90deg,
+          var(--wood-dark) 0px,
+          var(--wood-mid) 40px,
+          var(--wood-dark) 80px,
+          var(--wood-light) 120px,
+          var(--wood-dark) 160px
+        );
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       padding: 10px 0;
-      box-shadow: 0 4px 20px rgba(8, 32, 40, 0.2);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.35), inset 0 -1px 0 rgba(255,220,170,0.15);
+      border-bottom: 2px solid var(--navy-deep);
     }
     .navbar .container {
       display: flex;
@@ -154,23 +203,23 @@
     }
     .navbar-brand .name {
       font-family: var(--font-display);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: var(--navy);
       letter-spacing: 0;
       text-transform: uppercase;
     }
-    .navbar.scrolled .navbar-brand .name { color: var(--cream); }
+    .navbar.scrolled .navbar-brand .name { color: var(--cream); text-shadow: 0 2px 0 rgba(0,0,0,0.5); }
     .navbar-brand .name .logo-b,
     .navbar-brand .name .logo-c { font-size: 1.1em; }
     .navbar-brand .tagline {
       font-size: 0.55rem;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: rgba(15, 54, 66, 0.75);
+      color: var(--text-muted);
       margin-top: 3px;
       font-weight: 700;
     }
-    .navbar.scrolled .navbar-brand .tagline { color: rgba(255,250,234,0.75); }
+    .navbar.scrolled .navbar-brand .tagline { color: rgba(232,212,165,0.85); }
     .nav-links {
       display: flex;
       gap: 28px;
@@ -178,14 +227,14 @@
     }
     .nav-links a {
       font-size: 0.72rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--navy);
       transition: color 0.3s;
       position: relative;
     }
-    .navbar.scrolled .nav-links a { color: var(--cream); }
+    .navbar.scrolled .nav-links a { color: var(--cream); text-shadow: 0 1px 0 rgba(0,0,0,0.5); }
     .nav-links a::after {
       content: '';
       position: absolute;
@@ -202,11 +251,12 @@
       background: var(--orange) !important;
       color: var(--cream) !important;
       padding: 11px 22px;
-      border-radius: 50px;
+      border-radius: 4px;
       font-size: 0.7rem !important;
       font-weight: 800 !important;
       letter-spacing: 2px !important;
       transition: all 0.3s !important;
+      box-shadow: 0 2px 0 var(--navy);
     }
     .nav-cta:hover { background: var(--mustard) !important; color: var(--navy) !important; transform: translateY(-1px); }
     .nav-cta::after { display: none !important; }
@@ -233,17 +283,205 @@
     .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
     /* ========== HERO ========== */
+    /* ===== Cabecera tipo cartel de pizzería italiana ===== */
     .hero {
       position: relative;
-      min-height: 100vh;
+      min-height: 82vh;
       display: flex;
       align-items: center;
-      justify-content: center;
       overflow: hidden;
-      background: var(--teal-soft);
-      padding: 120px 24px 100px;
+      padding: 140px 24px 90px;
+      background:
+        radial-gradient(ellipse at 30% 40%, var(--cream) 0%, var(--cream-bg) 60%, color-mix(in srgb, var(--cream-bg) 80%, var(--wood-mid)) 100%);
     }
-    .hero-leaves { position: absolute; inset: 0; overflow: hidden; z-index: 1; }
+    /* Manchas decorativas tipo café derramado para textura */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 18%;
+      left: 8%;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle at 30% 30%, rgba(120,60,20,0.10) 0, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 12%;
+      right: 4%;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle at 70% 70%, rgba(60,40,20,0.12) 0, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-leaves { display: none; }
+
+    .hero-grid {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 0.85fr 1fr;
+      gap: clamp(40px, 6vw, 90px);
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* === Lado foto === */
+    .hero-photo {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    .hero-photo-frame {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 4/5;
+      border: 14px solid var(--wood-mid);
+      outline: 2px solid var(--navy);
+      outline-offset: -16px;
+      background: var(--wood-dark);
+      overflow: hidden;
+      transform: rotate(-2deg);
+      box-shadow:
+        0 22px 50px rgba(0,0,0,0.35),
+        0 0 0 1px rgba(255,220,170,0.1);
+    }
+    .hero-photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(0.28) saturate(0.92) contrast(1.04);
+      display: block;
+    }
+    /* Cinta adhesiva vintage en la esquina superior */
+    .hero-photo-frame::before {
+      content: '';
+      position: absolute;
+      top: -22px;
+      left: 24px;
+      width: 90px;
+      height: 26px;
+      background: linear-gradient(rgba(245,234,200,0.55), rgba(245,234,200,0.4));
+      border-left: 1px dashed rgba(43,29,16,0.2);
+      border-right: 1px dashed rgba(43,29,16,0.2);
+      transform: rotate(-12deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .hero-photo-frame::after {
+      content: '';
+      position: absolute;
+      bottom: -22px;
+      right: 36px;
+      width: 90px;
+      height: 26px;
+      background: linear-gradient(rgba(245,234,200,0.55), rgba(245,234,200,0.4));
+      border-left: 1px dashed rgba(43,29,16,0.2);
+      border-right: 1px dashed rgba(43,29,16,0.2);
+      transform: rotate(10deg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      pointer-events: none;
+      z-index: 5;
+    }
+    /* Sello "FORNO A LEGNA" */
+    .hero-photo-badge {
+      position: absolute;
+      top: -12px;
+      right: -22px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: var(--cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      text-transform: uppercase;
+      font-family: var(--font-display);
+      line-height: 1.05;
+      letter-spacing: 1px;
+      transform: rotate(10deg);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      border: 3px solid var(--cream);
+      outline: 1.5px solid var(--orange);
+      outline-offset: -8px;
+      z-index: 6;
+      padding: 6px;
+    }
+    .hero-photo-badge .badge-top { font-size: 0.6rem; letter-spacing: 3px; opacity: 0.92; }
+    .hero-photo-badge .badge-main { font-size: 1rem; font-style: italic; padding: 4px 0; font-family: var(--font-display); }
+    .hero-photo-badge .badge-bot { font-size: 0.6rem; letter-spacing: 3px; opacity: 0.92; }
+
+    /* === Lado texto === */
+    .hero-text { position: relative; }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-script);
+      color: var(--orange);
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+    }
+    .hero-eyebrow .orn {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--navy);
+    }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 4.6rem);
+      color: var(--navy);
+      line-height: 0.95;
+      letter-spacing: -1px;
+      font-weight: 700;
+      margin: 0 0 4px;
+      font-variation-settings: "opsz" 144, "SOFT" 100;
+    }
+    .hero-name-sub {
+      font-family: var(--font-display);
+      font-style: italic;
+      color: var(--orange);
+      font-size: clamp(1.3rem, 2.6vw, 1.8rem);
+      margin-bottom: 22px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .hero-name-sub .dot { color: var(--text-muted); margin: 0 8px; font-style: normal; }
+    .hero-desc {
+      max-width: 480px;
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+      line-height: 1.7;
+      color: var(--text);
+      margin: 0 0 24px;
+      font-weight: 400;
+    }
+    .hero-desc strong { color: var(--navy); font-weight: 700; font-family: var(--font-display); font-size: 1.05em; }
+    .hero-text .hero-tagline { margin-bottom: 28px; }
+    .hero-text .hero-btns { justify-content: flex-start; }
+
+    @media (max-width: 880px) {
+      .hero { padding: 120px 24px 60px; min-height: 0; }
+      .hero-grid { grid-template-columns: 1fr; gap: 50px; }
+      .hero-photo { order: 2; }
+      .hero-text { order: 1; text-align: center; }
+      .hero-eyebrow { justify-content: center; }
+      .hero-desc { margin-left: auto; margin-right: auto; }
+      .hero-text .hero-btns { justify-content: center; }
+      .hero-text .hero-tagline { display: inline-flex; }
+      .hero-photo-frame { max-width: 320px; }
+      .hero-photo-badge { width: 110px; height: 110px; right: -10px; }
+    }
     .hero-content {
       position: relative;
       z-index: 3;
@@ -252,11 +490,11 @@
     }
     .hero-logo-img {
       display: block;
-      width: clamp(240px, 36vw, 340px);
-      height: clamp(240px, 36vw, 340px);
+      width: clamp(150px, 20vw, 200px);
+      height: clamp(150px, 20vw, 200px);
       border-radius: 50%;
-      margin: 0 auto 36px;
-      box-shadow: 0 20px 50px rgba(8, 32, 40, 0.3);
+      margin: 0 auto 22px;
+      box-shadow: 0 14px 30px rgba(43, 29, 16, 0.35), 0 0 0 5px var(--cream), 0 0 0 6.5px var(--navy);
       object-fit: cover;
     }
     .visually-hidden {
@@ -288,14 +526,32 @@
       letter-spacing: 10px;
       text-transform: uppercase;
       color: var(--navy);
-      margin-bottom: 32px;
-      text-shadow:
-        2px 0 0 var(--cream), -2px 0 0 var(--cream),
-        0 2px 0 var(--cream), 0 -2px 0 var(--cream),
-        2px 2px 0 var(--cream), -2px -2px 0 var(--cream),
-        2px -2px 0 var(--cream), -2px 2px 0 var(--cream),
-        0 0 16px var(--cream);
+      margin-bottom: 24px;
+      font-style: italic;
+      font-weight: 500;
     }
+    /* Nombre grande de la casa */
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      color: var(--navy);
+      line-height: 1;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .hero-name em { font-style: italic; font-weight: 500; color: var(--orange); }
+    /* Frase explicativa bajo el nombre */
+    .hero-desc {
+      max-width: 520px;
+      margin: 16px auto 28px;
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+      line-height: 1.6;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .hero-desc strong { color: var(--navy); font-weight: 600; font-style: normal; }
     .hero-tagline {
       display: inline-flex;
       align-items: center;
@@ -303,10 +559,18 @@
       flex-wrap: wrap;
       margin-bottom: 40px;
       background: var(--cream);
-      border: 3px solid var(--navy);
-      border-radius: 50px;
+      border: 2px solid var(--navy);
+      border-radius: 2px;
       padding: 12px 28px;
       gap: 12px;
+      box-shadow: 0 4px 0 var(--navy);
+      position: relative;
+    }
+    .hero-tagline::before,
+    .hero-tagline::after {
+      content: '✦';
+      color: var(--orange);
+      font-size: 0.8rem;
     }
     .hero-tag-item {
       font-size: clamp(0.7rem, 1.5vw, 0.85rem);
@@ -332,36 +596,40 @@
       gap: 8px;
       padding: 14px 32px;
       font-size: 0.72rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
-      border-radius: 50px;
+      border-radius: 3px;
       transition: all 0.3s;
       font-family: var(--font-body);
     }
     .btn-primary {
       background: var(--navy);
       color: var(--cream);
-      border: 3px solid var(--navy);
+      border: 2px solid var(--navy);
+      box-shadow: 0 4px 0 var(--navy-deep);
     }
     .btn-primary:hover {
       background: var(--orange);
       border-color: var(--orange);
       transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--navy-deep);
     }
     .btn-outline {
-      border: 3px solid var(--navy);
+      border: 2px solid var(--navy);
       color: var(--navy);
       background: var(--cream);
+      box-shadow: 0 4px 0 var(--navy);
     }
     .btn-outline:hover {
       background: var(--navy);
       color: var(--cream);
       transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--navy-deep);
     }
     .hero-scroll {
       position: absolute;
-      bottom: 32px;
+      bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -370,7 +638,7 @@
       gap: 8px;
       color: var(--navy);
       font-size: 0.6rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
       animation: pulse 2s ease-in-out infinite;
@@ -378,7 +646,7 @@
     }
     .hero-scroll .line {
       width: 2px;
-      height: 40px;
+      height: 32px;
       background: linear-gradient(to bottom, var(--navy), transparent);
     }
     @keyframes pulse {
@@ -388,12 +656,19 @@
 
     /* ========== INFO BANNER ========== */
     .info-banner {
-      background: var(--mustard);
+      background:
+        repeating-linear-gradient(
+          90deg,
+          var(--mustard) 0,
+          var(--mustard) 18px,
+          color-mix(in srgb, var(--mustard) 88%, var(--navy)) 18px,
+          color-mix(in srgb, var(--mustard) 88%, var(--navy)) 36px
+        );
       padding: 24px 0;
       position: relative;
       z-index: 2;
-      border-top: 4px solid var(--navy);
-      border-bottom: 4px solid var(--navy);
+      border-top: 3px double var(--navy);
+      border-bottom: 3px double var(--navy);
     }
     .info-banner .container {
       display: flex;
@@ -458,7 +733,13 @@
       aspect-ratio: 4/5;
       object-fit: cover;
       border-radius: var(--radius-md);
-      border: 5px solid var(--navy);
+      border: 8px solid var(--wood-mid);
+      outline: 2px solid var(--navy);
+      outline-offset: -10px;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.35),
+        inset 0 0 0 1px rgba(255,220,170,0.2);
+      filter: sepia(0.18) saturate(0.95);
     }
     .about-img-float {
       position: absolute;
@@ -468,8 +749,11 @@
       aspect-ratio: 1;
       object-fit: cover;
       border-radius: 50%;
-      border: 6px solid var(--mustard);
-      box-shadow: 0 20px 50px rgba(8, 32, 40, 0.2);
+      border: 8px solid var(--cream);
+      outline: 3px solid var(--wood-mid);
+      outline-offset: -11px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      filter: sepia(0.22) saturate(0.9);
     }
     .about-badge {
       position: absolute;
@@ -542,9 +826,13 @@
     /* ========== CARTA ========== */
     .carta {
       padding: var(--section-padding) 0;
-      background: var(--mint-bg);
+      background:
+        linear-gradient(rgba(245, 234, 208, 0.85), rgba(245, 234, 208, 0.85)),
+        repeating-linear-gradient(45deg, transparent 0 38px, rgba(58,40,24,0.04) 38px 40px);
       position: relative;
       overflow-x: clip;
+      border-top: 1px solid color-mix(in srgb, var(--navy) 20%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--navy) 20%, transparent);
     }
     .carta-header {
       text-align: center;
@@ -571,20 +859,22 @@
       padding: 10px 22px;
       font-family: var(--font-body);
       font-size: 0.7rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--navy);
       background: var(--cream);
-      border: 2px solid var(--navy);
-      border-radius: 50px;
+      border: 1.5px solid var(--navy);
+      border-radius: 2px;
       cursor: pointer;
       transition: all 0.3s;
+      box-shadow: 0 3px 0 var(--navy);
     }
-    .carta-tab:hover { background: var(--teal); }
+    .carta-tab:hover { background: var(--yellow-pastel); transform: translateY(-1px); box-shadow: 0 4px 0 var(--navy); }
     .carta-tab.active {
       background: var(--navy);
       color: var(--cream);
+      box-shadow: 0 3px 0 var(--navy-deep);
     }
     .carta-category { display: none; }
     .carta-category.active { display: block; }
@@ -611,13 +901,15 @@
     .carta-category-title .line::before,
     .carta-category-title .line::after {
       content: '';
-      width: 60px;
-      height: 0;
-      border-top: 3px dotted var(--navy);
+      width: 80px;
+      height: 5px;
+      border-top: 1.5px solid var(--navy);
+      border-bottom: 1.5px solid var(--navy);
     }
     .carta-category-title .line span {
       color: var(--orange);
-      font-size: 1rem;
+      font-size: 1.4rem;
+      font-family: var(--font-display);
     }
     .carta-grid {
       display: grid;
@@ -628,7 +920,7 @@
       background: var(--cream);
       padding: 24px 28px;
       border-radius: var(--radius-lg);
-      border: 2px solid var(--navy);
+      border: 1.5px solid var(--navy);
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
@@ -636,10 +928,15 @@
       -webkit-tap-highlight-color: transparent;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 4px 0 var(--navy);
+      background-image:
+        linear-gradient(var(--cream), var(--cream)),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.22  0 0 0 0 0.15  0 0 0 0 0.08  0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      background-blend-mode: multiply;
     }
     .carta-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(8, 32, 40, 0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 7px 0 var(--navy);
     }
     .carta-item:focus-visible {
       outline: 3px solid var(--orange);
@@ -1145,8 +1442,12 @@
       overflow: hidden;
       border-radius: var(--radius-md);
       cursor: pointer;
-      border: 4px solid var(--navy);
+      border: 6px solid var(--wood-mid);
+      outline: 2px solid var(--navy);
+      outline-offset: -8px;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.3);
     }
+    .gallery-item img { filter: sepia(0.2) saturate(0.92) contrast(1.02); }
     .gallery-item:nth-child(1) {
       grid-column: span 2;
       grid-row: span 2;
@@ -1172,11 +1473,12 @@
       background: var(--navy);
       color: var(--cream);
       font-size: 0.72rem;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
-      border-radius: 50px;
+      border-radius: 3px;
       transition: all 0.3s;
+      box-shadow: 0 4px 0 var(--navy-deep);
     }
     .gallery-cta a:hover {
       background: var(--orange);
@@ -1462,10 +1764,22 @@
     /* ========== CTA ========== */
     .cta-section {
       padding: 100px 0;
-      background: var(--navy);
+      background:
+        repeating-linear-gradient(
+          180deg,
+          var(--wood-dark) 0px,
+          var(--wood-mid) 1px,
+          var(--wood-dark) 3px,
+          var(--wood-light) 6px,
+          var(--wood-dark) 9px
+        ),
+        var(--wood-dark);
+      background-blend-mode: multiply;
       text-align: center;
       position: relative;
       overflow: hidden;
+      border-top: 3px double var(--mustard);
+      border-bottom: 3px double var(--mustard);
     }
     .cta-section .container { position: relative; z-index: 2; }
     .cta-section .section-title {
@@ -1494,8 +1808,19 @@
     /* ========== FOOTER ========== */
     .footer {
       padding: 48px 0 24px;
-      background: var(--navy-deep);
+      background:
+        repeating-linear-gradient(
+          180deg,
+          var(--navy-deep) 0px,
+          var(--wood-dark) 2px,
+          var(--navy-deep) 5px,
+          var(--wood-mid) 8px,
+          var(--navy-deep) 12px
+        ),
+        var(--navy-deep);
+      background-blend-mode: multiply;
       color: var(--cream);
+      border-top: 4px double var(--mustard);
     }
     .footer-content {
       display: flex;
@@ -1615,12 +1940,12 @@
         position: sticky;
         top: 60px;
         z-index: 10;
-        background: var(--mint-bg);
+        background: transparent;
         padding: 14px 4px;
         margin-bottom: 32px;
         scroll-snap-type: x proximity;
         scroll-margin-top: 60px;
-        border-bottom: 2px dotted rgba(15, 54, 66, 0.18);
+        border-bottom: none;
       }
       .carta-tabs::-webkit-scrollbar { display: none; }
       .carta-tab { flex-shrink: 0; scroll-snap-align: start; }
@@ -1722,33 +2047,122 @@
   <!-- Reusable SVG leaf shapes -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <!-- Monstera -->
+      <!-- Rueda de carro / sol de cartel taberna (antes monstera) -->
       <symbol id="leaf-monstera" viewBox="0 0 200 200">
-        <path d="M100 10 C 150 20, 185 65, 180 115 C 175 160, 140 190, 95 185 C 50 180, 20 145, 20 100 C 20 55, 55 15, 100 10 Z" fill="currentColor"/>
-        <path d="M100 10 L100 185" stroke="#f5d36e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse cx="65" cy="70" rx="10" ry="14" fill="#fffcef"/>
-        <ellipse cx="130" cy="65" rx="8" ry="12" fill="#fffcef"/>
-        <ellipse cx="55" cy="120" rx="10" ry="14" fill="#fffcef"/>
-        <ellipse cx="135" cy="130" rx="9" ry="13" fill="#fffcef"/>
-        <ellipse cx="95" cy="150" rx="8" ry="12" fill="#fffcef"/>
+        <circle cx="100" cy="100" r="82" fill="none" stroke="currentColor" stroke-width="7"/>
+        <circle cx="100" cy="100" r="68" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <g stroke="currentColor" stroke-width="7" stroke-linecap="round">
+          <line x1="100" y1="22" x2="100" y2="82"/>
+          <line x1="100" y1="118" x2="100" y2="178"/>
+          <line x1="22" y1="100" x2="82" y2="100"/>
+          <line x1="118" y1="100" x2="178" y2="100"/>
+          <line x1="45" y1="45" x2="86" y2="86"/>
+          <line x1="114" y1="114" x2="155" y2="155"/>
+          <line x1="155" y1="45" x2="114" y2="86"/>
+          <line x1="45" y1="155" x2="86" y2="114"/>
+        </g>
+        <circle cx="100" cy="100" r="18" fill="currentColor"/>
+        <circle cx="100" cy="100" r="8" fill="var(--cream)"/>
+        <!-- pernos del aro -->
+        <g fill="currentColor">
+          <circle cx="100" cy="22" r="5"/>
+          <circle cx="100" cy="178" r="5"/>
+          <circle cx="22" cy="100" r="5"/>
+          <circle cx="178" cy="100" r="5"/>
+          <circle cx="45" cy="45" r="4"/>
+          <circle cx="155" cy="45" r="4"/>
+          <circle cx="155" cy="155" r="4"/>
+          <circle cx="45" cy="155" r="4"/>
+        </g>
       </symbol>
-      <!-- Banana leaf -->
+      <!-- Botella de vino casa (antes banana) -->
       <symbol id="leaf-banana" viewBox="0 0 200 260">
-        <path d="M100 10 C 150 30, 170 120, 155 200 C 148 235, 120 255, 100 255 C 80 255, 52 235, 45 200 C 30 120, 50 30, 100 10 Z" fill="currentColor"/>
-        <path d="M100 15 L100 250" stroke="#1a4035" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.55"/>
-        <path d="M100 55 L60 85 M100 85 L55 115 M100 115 L58 145 M100 145 L62 172 M100 175 L68 195 M100 55 L140 85 M100 85 L145 115 M100 115 L142 145 M100 145 L138 172 M100 175 L132 195" stroke="#1a4035" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/>
+        <!-- cápsula/cuello -->
+        <rect x="85" y="14" width="30" height="18" fill="var(--leaf-dark)"/>
+        <rect x="83" y="30" width="34" height="6" fill="var(--leaf-dark)"/>
+        <!-- cuello -->
+        <rect x="89" y="36" width="22" height="48" fill="currentColor"/>
+        <!-- hombro y cuerpo -->
+        <path d="M 89 80 Q 89 92 70 108 Q 58 122 58 142 L 58 238 Q 58 250 70 250 L 130 250 Q 142 250 142 238 L 142 142 Q 142 122 130 108 Q 111 92 111 80 Z" fill="currentColor"/>
+        <!-- etiqueta -->
+        <rect x="68" y="150" width="64" height="68" fill="var(--cream)"/>
+        <rect x="68" y="150" width="64" height="68" fill="none" stroke="var(--leaf-dark)" stroke-width="2"/>
+        <line x1="74" y1="166" x2="126" y2="166" stroke="var(--leaf-dark)" stroke-width="1.5"/>
+        <line x1="74" y1="206" x2="126" y2="206" stroke="var(--leaf-dark)" stroke-width="1.5"/>
+        <!-- emblema en la etiqueta -->
+        <circle cx="100" cy="186" r="11" fill="none" stroke="var(--leaf-dark)" stroke-width="2"/>
+        <text x="100" y="190" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="700" fill="var(--leaf-dark)">B</text>
+        <!-- brillo lateral -->
+        <rect x="64" y="115" width="5" height="120" fill="var(--cream)" opacity="0.25"/>
       </symbol>
-      <!-- Palm fan -->
+      <!-- Pala de pizza con masa (antes palm) -->
       <symbol id="leaf-palm" viewBox="0 0 200 200">
-        <path d="M100 190 Q 100 170 95 150 Q 88 135 65 120 Q 50 105 45 85 M100 190 Q 100 170 95 150 Q 90 130 75 105 Q 65 85 58 60 M100 190 Q 100 170 100 145 Q 100 115 95 85 Q 92 55 95 30 M100 190 Q 100 170 105 150 Q 112 120 125 95 Q 135 70 142 45 M100 190 Q 100 170 108 155 Q 120 130 140 110 Q 155 90 165 70" stroke="currentColor" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <g transform="rotate(-32 100 100)">
+          <!-- mango -->
+          <rect x="93" y="100" width="14" height="100" rx="3" fill="currentColor"/>
+          <!-- enrollado del agarre -->
+          <g stroke="var(--leaf-dark)" stroke-width="1.8" opacity="0.7">
+            <line x1="93" y1="170" x2="107" y2="170"/>
+            <line x1="93" y1="180" x2="107" y2="180"/>
+            <line x1="93" y1="190" x2="107" y2="190"/>
+          </g>
+          <!-- conexión cuello -->
+          <path d="M 86 100 L 114 100 L 110 80 L 90 80 Z" fill="currentColor"/>
+          <!-- cabeza redonda de la pala -->
+          <circle cx="100" cy="40" r="55" fill="currentColor"/>
+          <!-- pizza encima -->
+          <circle cx="100" cy="40" r="42" fill="var(--cream)"/>
+          <circle cx="100" cy="40" r="42" fill="var(--orange)" opacity="0.4"/>
+          <!-- pepperoni -->
+          <g fill="var(--orange)">
+            <circle cx="88" cy="28" r="5"/>
+            <circle cx="112" cy="32" r="5"/>
+            <circle cx="118" cy="52" r="4.5"/>
+            <circle cx="92" cy="55" r="5"/>
+            <circle cx="100" cy="42" r="4"/>
+          </g>
+          <!-- borde quemado -->
+          <circle cx="100" cy="40" r="42" fill="none" stroke="var(--leaf-dark)" stroke-width="2.5" opacity="0.55"/>
+        </g>
       </symbol>
-      <!-- Round branch -->
+      <!-- Haz de leña atado con cuerda (antes branch) -->
       <symbol id="leaf-branch" viewBox="0 0 200 200">
-        <path d="M30 180 Q 80 140 150 40" stroke="#e97c3d" stroke-width="3" fill="none"/>
-        <ellipse cx="60" cy="148" rx="16" ry="20" fill="currentColor" transform="rotate(-25 60 148)"/>
-        <ellipse cx="90" cy="115" rx="16" ry="20" fill="currentColor" transform="rotate(-15 90 115)"/>
-        <ellipse cx="115" cy="85" rx="16" ry="20" fill="currentColor" transform="rotate(0 115 85)"/>
-        <ellipse cx="135" cy="58" rx="14" ry="18" fill="currentColor" transform="rotate(15 135 58)"/>
+        <g transform="rotate(-12 100 100)">
+          <!-- troncos -->
+          <rect x="14" y="62" width="172" height="22" rx="4" fill="currentColor"/>
+          <rect x="14" y="89" width="172" height="22" rx="4" fill="currentColor"/>
+          <rect x="14" y="116" width="172" height="22" rx="4" fill="currentColor"/>
+          <!-- anillos de los extremos (corte de tronco) -->
+          <g fill="var(--leaf-dark)">
+            <ellipse cx="16" cy="73" rx="4" ry="11"/>
+            <ellipse cx="184" cy="73" rx="4" ry="11"/>
+            <ellipse cx="16" cy="100" rx="4" ry="11"/>
+            <ellipse cx="184" cy="100" rx="4" ry="11"/>
+            <ellipse cx="16" cy="127" rx="4" ry="11"/>
+            <ellipse cx="184" cy="127" rx="4" ry="11"/>
+          </g>
+          <!-- vetas longitudinales -->
+          <g stroke="var(--leaf-dark)" stroke-width="1.3" opacity="0.55">
+            <line x1="30" y1="73" x2="170" y2="73"/>
+            <line x1="30" y1="100" x2="170" y2="100"/>
+            <line x1="30" y1="127" x2="170" y2="127"/>
+          </g>
+          <!-- cuerda que ata -->
+          <rect x="58" y="50" width="14" height="100" fill="var(--leaf-dark)"/>
+          <rect x="128" y="50" width="14" height="100" fill="var(--leaf-dark)"/>
+          <g stroke="currentColor" stroke-width="1.2" opacity="0.5">
+            <line x1="58" y1="60" x2="72" y2="60"/>
+            <line x1="58" y1="80" x2="72" y2="80"/>
+            <line x1="58" y1="100" x2="72" y2="100"/>
+            <line x1="58" y1="120" x2="72" y2="120"/>
+            <line x1="58" y1="140" x2="72" y2="140"/>
+            <line x1="128" y1="60" x2="142" y2="60"/>
+            <line x1="128" y1="80" x2="142" y2="80"/>
+            <line x1="128" y1="100" x2="142" y2="100"/>
+            <line x1="128" y1="120" x2="142" y2="120"/>
+            <line x1="128" y1="140" x2="142" y2="140"/>
+          </g>
+        </g>
       </symbol>
 
       <!-- Allergen icons (EU 14) -->
@@ -1856,45 +2270,39 @@
 
   <!-- ==================== HERO ==================== -->
   <section class="hero" id="hero">
-    <div class="hero-leaves" aria-hidden="true">
-      <!-- Big teal monstera top-left, dominant -->
-      <svg class="leaf" style="top:-160px;left:-180px;width:720px;height:720px;color:var(--teal);transform:rotate(-8deg)"><use href="#leaf-monstera"/></svg>
-      <!-- Giant orange banana right, extending top to middle -->
-      <svg class="leaf" style="top:-120px;right:-140px;width:520px;height:760px;color:var(--orange);transform:rotate(18deg)"><use href="#leaf-banana"/></svg>
-      <!-- Big mustard banana bottom-left, overlapping teal monstera -->
-      <svg class="leaf" style="bottom:-180px;left:-120px;width:560px;height:760px;color:var(--mustard);transform:rotate(-22deg)"><use href="#leaf-banana"/></svg>
-      <!-- Big dark-green palm fan bottom-center, behind circle -->
-      <svg class="leaf" style="bottom:-100px;left:32%;width:500px;height:500px;color:var(--leaf-dark);transform:rotate(-5deg)"><use href="#leaf-palm"/></svg>
-      <!-- Big eucalyptus branch bottom-right, yellow -->
-      <svg class="leaf" style="bottom:-60px;right:-60px;width:480px;height:480px;color:var(--mustard);transform:rotate(10deg)"><use href="#leaf-branch"/></svg>
-      <!-- Medium teal monstera mid-right, behind circle -->
-      <svg class="leaf" style="top:28%;right:8%;width:340px;height:340px;color:var(--teal);transform:rotate(40deg)"><use href="#leaf-monstera"/></svg>
-      <!-- Medium dark palm fan left-mid, behind circle -->
-      <svg class="leaf" style="top:38%;left:8%;width:380px;height:380px;color:var(--leaf-dark);transform:rotate(-25deg)"><use href="#leaf-palm"/></svg>
-      <!-- Coral accent bottom-center-right -->
-      <svg class="leaf" style="bottom:12%;right:26%;width:260px;height:340px;color:var(--coral);transform:rotate(35deg)"><use href="#leaf-banana"/></svg>
-      <!-- Yellow-pastel small monstera top-right mid -->
-      <svg class="leaf" style="top:12%;right:30%;width:300px;height:300px;color:var(--yellow-pastel);transform:rotate(60deg)"><use href="#leaf-monstera"/></svg>
-    </div>
-    <div class="hero-content">
-      <img
-        src="images/logo-botanico.jpg"
-        alt="Botánico Pizza · Pasta"
-        class="hero-logo-img"
-        width="340"
-        height="340"
-      />
-      <h1 class="visually-hidden">Botánico Pizza · Pasta</h1>
-      <div class="hero-tagline">
-        <span class="hero-tag-item">Horno de leña</span>
-        <span class="hero-tag-sep">&bull;</span>
-        <span class="hero-tag-item">Masa artesanal</span>
-        <span class="hero-tag-sep">&bull;</span>
-        <span class="hero-tag-item">Alcalá la Real</span>
+    <div class="hero-grid">
+      <div class="hero-photo">
+        <div class="hero-photo-frame">
+          <img src="images/dos-pizzas-mesa.png" alt="Pizzas artesanales recién salidas del horno de leña">
+        </div>
+        <div class="hero-photo-badge">
+          <span class="badge-top">✦ Forno ✦</span>
+          <span class="badge-main">a Legna</span>
+          <span class="badge-bot">Pizzería</span>
+        </div>
       </div>
-      <div class="hero-btns">
-        <a href="#carta" class="btn btn-primary">Ver Carta</a>
-        <a href="#contacto" class="btn btn-outline">Cómo llegar</a>
+      <div class="hero-text">
+        <div class="hero-eyebrow">
+          <span class="orn">❦</span>
+          <span>Pizzería &middot; Trattoria</span>
+          <span class="orn">❦</span>
+        </div>
+        <h1 class="hero-name">Botánico</h1>
+        <div class="hero-name-sub">Pizza<span class="dot">·</span>Pasta</div>
+        <p class="hero-desc">
+          Pizza artesanal al <strong>horno de leña</strong>, con <strong>masa madre</strong> de fermentación lenta y harinas italianas. Las recetas de toda la vida hechas con cariño, en el corazón de <strong>Alcalá la Real</strong>.
+        </p>
+        <div class="hero-tagline">
+          <span class="hero-tag-item">Horno de leña</span>
+          <span class="hero-tag-sep">&bull;</span>
+          <span class="hero-tag-item">Masa madre</span>
+          <span class="hero-tag-sep">&bull;</span>
+          <span class="hero-tag-item">Producto local</span>
+        </div>
+        <div class="hero-btns">
+          <a href="#carta" class="btn btn-primary">Ver Carta</a>
+          <a href="#contacto" class="btn btn-outline">Cómo llegar</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1934,7 +2342,6 @@
 
   <!-- ==================== CARTA ==================== -->
   <section class="carta" id="carta">
-    <svg class="leaf" aria-hidden="true" style="top:4%;left:-60px;width:220px;height:220px;color:var(--teal);transform:rotate(-30deg);opacity:0.5"><use href="#leaf-monstera"/></svg>
     <svg class="leaf" aria-hidden="true" style="bottom:6%;right:-40px;width:200px;height:260px;color:var(--mustard);transform:rotate(25deg);opacity:0.6"><use href="#leaf-banana"/></svg>
     <div class="container">
       <div class="carta-header fade-in">
@@ -1960,7 +2367,7 @@
         <div class="carta-category active" id="pizzas-novedades">
           <div class="carta-category-title">
             <h3>Novedades de la Casa</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <div class="carta-grid">
             <div class="carta-item">
@@ -2004,7 +2411,7 @@
         <div class="carta-category" id="pizzas-clasicas">
           <div class="carta-category-title">
             <h3>Pizzas Clásicas</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <div class="carta-grid">
             <div class="carta-item">
@@ -2111,7 +2518,7 @@
         <div class="carta-category" id="pizzas-especiales">
           <div class="carta-category-title">
             <h3>Pizzas Especiales</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <div class="carta-grid">
             <div class="carta-item">
@@ -2241,7 +2648,7 @@
         <div class="carta-category" id="pasta">
           <div class="carta-category-title">
             <h3>Pastas al Horno</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <p style="text-align:center; font-family:var(--font-body); font-size:0.75rem; letter-spacing:2px; text-transform:uppercase; font-weight:700; color:var(--navy); opacity:0.75; margin:-24px auto 32px; max-width:520px;">
             Salsas a elegir: Boloñesa &middot; Carbonara &middot; Gorgonzola &middot; Setas &middot; Pesto
@@ -2296,7 +2703,7 @@
         <div class="carta-category" id="entrantes">
           <div class="carta-category-title">
             <h3>Entrantes</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <div class="carta-grid">
             <div class="carta-item">
@@ -2330,7 +2737,7 @@
         <div class="carta-category" id="ensaladas">
           <div class="carta-category-title">
             <h3>Ensaladas</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <div class="carta-grid">
             <div class="carta-item">
@@ -2380,7 +2787,7 @@
         <div class="carta-category" id="postres">
           <div class="carta-category-title">
             <h3>Postres</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <div class="carta-grid">
             <div class="carta-item">
@@ -2422,7 +2829,7 @@
         <div class="carta-category" id="bebidas">
           <div class="carta-category-title">
             <h3>Bebidas</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <div class="carta-grid">
             <div class="carta-item">
@@ -2569,7 +2976,7 @@
         <div class="carta-category" id="vinos">
           <div class="carta-category-title">
             <h3>Vinos</h3>
-            <div class="line"><span>&#10045;</span></div>
+            <div class="line"><span>&#10086;</span></div>
           </div>
           <div class="carta-grid">
             <div class="carta-item">
@@ -3354,7 +3761,7 @@
               div.innerHTML = `
                 <div class="carta-category-title">
                   <h3>${cat.name}</h3>
-                  <div class="line"><span>&#10045;</span></div>
+                  <div class="line"><span>&#10086;</span></div>
                 </div>
                 <div class="carta-grid">
                   ${catItems.map(item => `
