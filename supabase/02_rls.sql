@@ -94,6 +94,12 @@ create policy "config_admin_write"
   to authenticated
   using (true) with check (true);
 
+-- ---------------------------------------------------------------
+-- VISTA carta_publica — lectura pública (anon/auth)
+-- Sin este GRANT, pedir.html no puede leer la carta y cae a demo.
+-- ---------------------------------------------------------------
+grant select on carta_publica to anon, authenticated;
+
 -- =====================================================
 -- Permitir que anon ejecute las funciones públicas
 -- =====================================================

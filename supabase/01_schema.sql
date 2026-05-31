@@ -52,7 +52,7 @@ create table if not exists pedidos (
   estado text not null default 'nuevo'
     check (estado in ('nuevo','preparando','servido','cancelado')),
   total numeric(7,2) not null check (total >= 0),
-  items jsonb not null,                   -- [{plato_id, nombre, precio, cantidad, subtotal}]
+  items jsonb not null,                   -- [{plato_id, nombre, precio, cantidad, nota, subtotal}]
   num_items smallint not null,
   ip_hash text,                           -- hash de la IP del cliente (rate limit)
   created_at timestamptz not null default now(),
